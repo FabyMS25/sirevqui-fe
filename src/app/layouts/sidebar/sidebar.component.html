@@ -1,0 +1,164 @@
+<!-- ========== App Menu ========== -->
+<div class="app-menu navbar-menu">
+  <!-- LOGO -->
+  <div class="navbar-brand-box">
+    <!-- Dark Logo-->
+    <a routerLink="/" class="logo logo-dark">
+      <span class="logo-sm">
+        <img src="assets/images/logos/logo-sm.png" alt="" height="30">
+      </span>
+      <span class="logo-lg">
+        <img src="assets/images/logos/logo-dark.png" alt="" height="65">
+      </span>
+    </a>
+    <!-- Light Logo-->
+    <a routerLink="/" class="logo logo-light">
+      <span class="logo-sm">
+        <img src="assets/images/logos/logo-sm.png" alt="" height="30">
+      </span>
+      <span class="logo-lg">
+        <img src="assets/images/logos/logo-light.png" alt="" height="65">
+      </span>
+    </a>
+    <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+      <i class="ri-record-circle-line"></i>
+    </button>
+  </div>
+
+  <div class="dropdown sidebar-user m-1 rounded">
+    <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="d-flex align-items-center gap-2">
+          <img class="rounded-circle header-profile-user" [src]="'assets/images/users/'+avatar" alt="Header Avatar">
+           <span class="text-start">
+              <span class="d-none d-lg-inline-block text-primary sidebar-user-name-text">{{userData.username}}</span>
+              <span class="d-none d-lg-block fs-14 sidebar-user-name-sub-text">
+                <i class="ri ri-checkbox-blank-circle-fill fs-10 text-primary align-self-center"></i> 
+                <span class="align-middle text-muted m-2">Online</span>
+              </span>
+          </span>
+        </span>
+    </button>
+    <div class="dropdown-menu dropdown-menu-end">
+        <!-- item-->
+        <h6 class="dropdown-header">Bienvenido {{userData.username}}!</h6>
+        <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
+        <a class="dropdown-item" href="apps-chat.html"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Messages</span></a>
+        <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Taskboard</span></a>
+        <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Balance : <b>$5971.67</b></span></a>
+        <a class="dropdown-item" href="pages-profile-settings.html"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
+        <a class="dropdown-item" href="auth-lockscreen-basic.html"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a>
+        <a class="dropdown-item" href="auth-logout-basic.html"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+    </div>
+</div>
+
+  <div id="scrollbar">
+    <div class="container-fluid">
+
+      <div id="two-column-menu">
+      </div>
+      <ngx-simplebar class="sidebar-menu-scroll" style="max-height: calc(100vh - 70px)">
+        <ul class="metismenu list-unstyled navbar-nav" id="navbar-nav">
+          @for(item of menuItems; track $index){
+          @if(item.isTitle){
+          <li class="menu-title"><span data-key="t-menu">{{ item.nombreMenu | translate }}</span></li>
+          }@else {
+          <li class="nav-item">
+            @if(!item.permisoPadreDto){
+            @if(hasItems(item)){
+            <a href="javascript:void(0);" class="is-parent nav-link menu-link" 
+              [ngClass]="{'has-arrow': !item.badge, 'has-dropdown': item.badge}" data-bs-toggle="collapse" 
+              [attr.aria-expanded]="!item.isCollapsed" (click)="toggleItem(item)">
+              <i class="{{ item.icono }} icon nav-icon" class=""></i>
+              <span class=""> {{ item.nombreMenu | translate }}</span>
+              @if(item.badge){<span class="badge badge-pill {{item.badge.variant}}">
+              {{item.badge.text | translate}}</span>}
+            </a>
+
+            <div class="collapse menu-dropdown" #collapse="ngbCollapse" [(ngbCollapse)]="item.isCollapsed">
+              <ul class="nav nav-sm flex-column" aria-expanded="false">
+                @for(subitem of getSubMenu(item.permisoHijoListDto); track $index){
+                <li class="nav-item">
+                  @if(hasItems(subitem)){
+                  <a class="nav-link" href="javascript:void(0);" 
+                    [attr.data-parent]="subitem.permisoPadreDto" data-bs-toggle="collapse" 
+                    [attr.aria-expanded]="!subitem.isCollapsed" (click)="toggleItem(subitem)">
+                    {{ subitem.nombreMenu | translate}}
+                    @if(subitem.badge){<span class="badge badge-pill {{subitem.badge.variant}}">
+                      {{subitem.badge.text | translate}}</span>}
+                  </a>
+
+                  <div class="collapse menu-dropdown sub-menu" #collapse="ngbCollapse" [(ngbCollapse)]="subitem.isCollapsed">
+                    <ul class="nav nav-sm flex-column" aria-expanded="false">
+                      @for(subSubitem of getSubMenu(subitem.permisoHijoListDto); track $index){
+                      <li class="nav-item">
+                        @if(hasItems(subSubitem)){
+                        <a class="nav-link" href="javascript:void(0);" 
+                          [attr.data-parent]="subSubitem.permisoPadreDto" data-bs-toggle="collapse" 
+                          [attr.aria-expanded]="!subSubitem.isCollapsed" (click)="toggleItem(subSubitem)">
+                          {{ subSubitem.nombreMenu | translate}}
+                          @if(subSubitem.badge){<span class="badge badge-pill {{subSubitem.badge.variant}}">
+                            {{subSubitem.badge.text | translate}}</span>}
+                        </a>
+
+                        <div class="collapse menu-dropdown extra-sub-menu" #collapse="ngbCollapse" [(ngbCollapse)]="subSubitem.isCollapsed">
+                          <ul class="nav nav-sm flex-column" aria-expanded="false">
+                            @for(subSubitem1 of getSubMenu(subSubitem.permisoHijoListDto); track $index){
+                            <li class="nav-item">
+                              <a [attr.data-parent]="subSubitem1.permisoPadreDto" 
+                              [routerLink]="subSubitem1.ruta" class="nav-link" (click)="updateActive($event)">
+                                {{ subSubitem1.nombreMenu | translate }}
+                              </a>
+
+                            </li>
+                            }
+                          </ul>
+                        </div>
+                        }@else {
+                        <a [routerLink]="subSubitem.ruta" class="nav-link" 
+                          [attr.data-parent]="subSubitem.permisoPadreDto" (click)="updateActive($event)">
+                          {{ subSubitem.nombreMenu | translate}}
+                          @if(subSubitem.badge){<span class="badge badge-pill {{subSubitem.badge.variant}}">
+                            {{subSubitem.badge.text | translate}}</span>}
+                        </a>
+                        }
+                      </li>
+                      }
+                    </ul>
+                  </div>
+                  }@else {
+                  <a [routerLink]="subitem.ruta" class="nav-link" 
+                    [attr.data-parent]="subitem.permisoPadreDto" (click)="updateActive($event)">
+                    {{ subitem.nombreMenu | translate}}
+                    @if(subitem.badge){<span class="badge badge-pill {{subitem.badge.variant}}">
+                      {{subitem.badge.text | translate}}</span>}
+                  </a>
+                  }
+                </li>
+                }
+              </ul>
+            </div>
+            }@else {
+            <a [routerLink]="item.ruta" routerLinkActive="active" class="side-nav-link-ref nav-link menu-link">
+              @if(item.icono){<i class="bx {{ item.icono }} icon nav-icon" class=""></i>}
+              <span class=""> {{ item.nombreMenu | translate }} </span>
+              @if(item.badge){<span class="badge {{item.badge.variant}} float-end">
+                {{item.badge.text | translate}}</span>}
+            </a>
+            }
+            }
+          </li>
+          }
+          }
+        </ul>
+      </ngx-simplebar>
+    </div>
+    <!-- Sidebar -->
+  </div>
+  <div class="sidebar-background"></div>
+</div>
+<!-- Left Sidebar End -->
+
+<!-- Vertical Overlay-->
+<div class="vertical-overlay" (click)="SidebarHide()"></div>

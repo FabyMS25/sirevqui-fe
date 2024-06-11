@@ -1,0 +1,48 @@
+<div class="">
+    <!-- card -->
+    <div class="card card-animate">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1 overflow-hidden">
+                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">{{title}}</p>
+                </div>
+                <div class="flex-shrink-0">
+                    <h5 class="fs-14 mb-0"
+                        [ngClass]=" {'text-success': profit === 'up', 'text-danger': profit === 'down', 'text-muted': profit === 'equal'}">
+                        <i class="fs-13 align-middle float-start"
+                            [ngClass]=" {'ri-arrow-right-up-line': profit === 'up', 'ri-arrow-right-down-line': profit === 'down'}"></i>
+                            @if(profit == 'up' || profit == 'equal'){
+                                <span>+</span>{{persantage}} %
+                                }@else {
+                                <span>-</span>{{persantage}} %
+                                }
+                       
+                    </h5>
+                </div>
+            </div>
+            <div class="d-flex align-items-end justify-content-between mt-4">
+                <div>
+                    <h4 class="fs-20 fw-semibold ff-secondary mb-4">
+                        @if(title == 'TOTAL EARNINGS' || title == 'MY BALANCE'){
+                            <span>$</span> <span [countUp]="value" class="counter-value" [options]="option"></span>
+                            <span>K</span>
+                        }@else if(title == 'CUSTOMERS'){
+                            <span [countUp]="value" class="counter-value" [options]="option"></span>
+                            <span>M</span>
+                        }@else{
+                            <span [countUp]="value" class="counter-value"></span>
+                        }
+                    </h4>
+                    <a href="javascript:void(0);" class="text-decoration-underline">{{link}}</a>
+                </div>
+                <div class="avatar-sm flex-shrink-0">
+                    <span class="avatar-title rounded fs-3"
+                        [ngClass]=" { 'bg-secondary-subtle': icon === 'bx-dollar-circle', 'bg-primary-subtle': icon === 'bx-shopping-bag', 'bg-success-subtle ': icon === 'bx-user-circle', 'bg-warning-subtle ': icon === 'bx-wallet'}">
+                        <i class="bx {{icon}}"
+                            [ngClass]=" { 'text-secondary': icon === 'bx-dollar-circle', 'text-primary': icon === 'bx-shopping-bag', 'text-success ': icon === 'bx-user-circle', 'text-warning ': icon === 'bx-wallet'}"></i>
+                    </span>
+                </div>
+            </div>
+        </div><!-- end card body -->
+    </div><!-- end card -->
+</div><!-- end col -->

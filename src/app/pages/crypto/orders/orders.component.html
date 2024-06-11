@@ -1,0 +1,131 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Orders" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row" id="contactList">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex flex-column flex-sm-row align-items-sm-center gap-2 border-0">
+                <h5 class="card-title mb-0 flex-grow-1">All Orders</h5>
+                <div class="flex-shrink-0">
+                    <div class="flax-shrink-0 hstack gap-2">
+                        <button class="btn btn-primary">Today's Orders</button>
+                        <button class="btn btn-soft-success">Past Orders</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border border-dashed border-end-0 border-start-0">
+                <div class="row g-2">
+                    <div class="col-xl-4 col-md-6">
+                        <div class="search-box">
+                            <input type="text" name="searchTerm" class="form-control search"
+                                placeholder="Search to orders..." [(ngModel)]="searchTerm" (ngModelChange)="performSearch()">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
+                    </div>
+                    <!--end col-->
+                    <div class="col-xl-3 col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1"><i class="ri-calendar-2-line"></i></span>
+                            <input class="form-control flatpickr-input" type="text" placeholder="Enter publish date"
+                                mwlFlatpickr [altInput]="true" [convertModelValue]="true" [(ngModel)]="date"
+                                mode="range">
+                        </div>
+                    </div>
+                    <!--end col-->
+                    <div class="col-xl-2 col-md-4">
+                        <select class="form-control" data-choices data-choices-search-false
+                            name="choices-single-default" id="choices-single-default" [(ngModel)]="type" (ngModelChange)="typeFilter()">
+                            <option value="">Select Type</option>
+                            <option value="Sell" [ngValue]="Sell">Sell</option>
+                            <option value="Buy" [ngValue]="Buy">Buy</option>
+                        </select>
+                    </div>
+                    <!--end col-->
+                    <div class="col-xl-2 col-md-4">
+                        <select class="form-control" data-choices data-choices-search-false
+                            name="choices-single-default2" id="choices-single-default2" [(ngModel)]="status" (ngModelChange)="statusFilter()">
+                            <option value="">Select Status</option>
+                            <option value="Successful" [ngValue]="Successful">Successful</option>
+                            <option value="Cancelled" [ngValue]="Cancelled">Cancelled</option>
+                            <option value="Pending" [ngValue]="Pending">Pending</option>
+                        </select>
+                    </div>
+                    <!--end col-->
+                    <div class="col-xl-1 col-md-4">
+                        <button class="btn btn-secondary w-100">Filters</button>
+                    </div>
+                </div>
+                <!--end row-->
+            </div>
+            <div class="card-body">
+                <div class="table-responsive table-card">
+                    <table class="table align-middle table-nowrap" id="customerTable">
+                        <thead class="table-light text-muted">
+                            <tr>
+                                <th class="sort" (click)="onSort('date')">Date</th>
+                                <th class="sort" (click)="onSort('coinName')">Name</th>
+                                <th class="sort" (click)="onSort('type')">Type</th>
+                                <th class="sort" (click)="onSort('quantity')">Quantity</th>
+                                <th class="sort" (click)="onSort('orderValue')">Order Value
+                                </th>
+                                <th class="sort" (click)="onSort('avgPrice')">Avg Price</th>
+                                <th class="sort" (click)="onSort('price')">Price</th>
+                                <th class="sort" (click)="onSort('status')">Status</th>
+                            </tr>
+                        </thead>
+                        <!--end thead-->
+                        <tbody class="list form-check-all">
+                            @for(data of orders;track $index){
+                            <tr>
+                                <td class="order_date">{{data.date | date :'longDate'}} <small
+                                        class="text-muted">{{data.time}}</small></td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <img src="{{data.img}}" alt="" class="avatar-xxs" />
+                                        </div>
+                                        <a href="javascript:void(0);"
+                                            class="currency_name flex-grow-1 ms-2">{{data.coinName}}</a>
+                                    </div>
+                                </td>
+                                <td class="type text-{{data.typeClass}}">{{data.type}}</td>
+                                <td>
+                                    <ngb-highlight [result]="data.quantity" [term]="searchTerm"></ngb-highlight>
+                                </td>
+                                <td>
+                                    <ngb-highlight [result]="data.orderValue" [term]="searchTerm">
+                                    </ngb-highlight>
+                                </td>
+                                <td>
+                                    <ngb-highlight [result]="data.avgPrice" [term]="searchTerm"></ngb-highlight>
+                                </td>
+                                <td>
+                                    <ngb-highlight [result]="data.price" [term]="searchTerm"></ngb-highlight>
+                                </td>
+                                <td class="status"><span
+                                        class="badge bg-{{data.statusClass}}-subtle text-{{data.statusClass}} text-uppercase">{{data.status}}</span>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                    <!--end table-->
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <!-- Pagination -->
+                    <ngb-pagination [collectionSize]="OrdersList?.length" [(page)]="service.page" [pageSize]="service.pageSize" (pageChange)="changePage()"></ngb-pagination>
+                    <!-- End Pagination -->
+                </div>
+            </div>
+            <div id="elmLoader">
+                <div class="spinner-border text-primary avatar-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <!--end card-->
+    </div>
+    <!--end col-->
+</div>
+<!--end row-->

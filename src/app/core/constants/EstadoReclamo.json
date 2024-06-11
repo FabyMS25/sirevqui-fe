@@ -1,0 +1,14 @@
+[
+    {
+        "id": "PE",
+        "descripcion": "PENDIENTE"
+    },
+    {
+        "id": "PL",
+        "descripcion": "VALIDADO"
+    },
+    {
+        "id": "PG",
+        "descripcion": "RECHAZADO"
+    }
+]

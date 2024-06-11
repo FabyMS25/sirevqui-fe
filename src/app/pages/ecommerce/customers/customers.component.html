@@ -1,0 +1,279 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Customers" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card" id="customerList">
+            <div class="card-header border-bottom-dashed">
+
+                <div class="row g-4 align-items-center">
+                    <div class="col-sm">
+                        <div>
+                            <h5 class="card-title mb-0">Customer List</h5>
+                        </div>
+                    </div>
+                    <div class="col-sm-auto">
+                        <div class="d-flex flex-wrap align-items-start gap-2">
+                            <button class="btn btn-soft-danger" id="remove-actions" style="display: none"
+                                (click)="deleteMultiple(deleteModel)"><i class="ri-delete-bin-2-line"></i></button>
+                            <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
+                                data-bs-target="#showModal" (click)="openModal(content)"><i
+                                    class="ri-add-line align-bottom me-1"></i> Add Customer</button>
+                            <button type="button" class="btn btn-secondary" (click)="csvFileExport()"><i
+                                    class="ri-file-download-line align-bottom me-1"></i> Export</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border-bottom-dashed border-bottom">
+                <div class="row g-3">
+                    <div class="col-xl-6">
+                        <div class="search-box">
+                            <input type="text" name="searchTerm" class="form-control"
+                                placeholder="Search for customer, email, phone, status or something..."
+                                [(ngModel)]="searchTerm" (ngModelChange)="performSearch()">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
+                    </div>
+                    <!--end col-->
+                    <div class="col-xl-6">
+                        <div class="row g-3">
+                            <div class="col-sm-4">
+                                <div class="">
+                                    <input class="form-control flatpickr-input" type="text" mwlFlatpickr
+                                        [altInput]="true" [convertModelValue]="true" placeholder="Select date"
+                                        id="isDate" [(ngModel)]="filterDate" (change)="dateFilter()" mode="range">
+                                </div>
+                            </div>
+                            <!--end col-->
+                            <div class="col-sm-4">
+                                <div>
+                                    <select class="form-control" data-plugin="choices" data-choices
+                                        data-choices-search-false name="choices-single-default" id="idStatus"
+                                        [(ngModel)]="status" (ngModelChange)="statusFilter()">
+                                        <option value="" selected> Select Status</option>
+                                        <option value="Active">Active</option>
+                                        <option value="Block">Block</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--end col-->
+
+                            <div class="col-sm-4">
+                                <div>
+                                    <button type="button" class="btn btn-primary w-100"><i
+                                            class="ri-equalizer-fill mx-2 align-bottom"></i>Filters</button>
+                                </div>
+                            </div>
+                            <!--end col-->
+                        </div>
+                    </div>
+                </div>
+                <!--end row-->
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="table-responsive table-card mb-1">
+                        <table class="table">
+                            <thead class="table-light text-muted">
+                                <tr>
+                                    <th scope="col" style="width: 50px;">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="checkAll" value="option"
+                                                [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
+                                        </div>
+                                    </th>
+                                    <th class="sort" (click)="onSort('customer')">Customer
+                                    </th>
+                                    <th class="sort" (click)="onSort('email')">Email</th>
+                                    <th class="sort" (click)="onSort('phone')">Phone</th>
+                                    <th class="sort" (click)="onSort('date')">Joining
+                                        Date</th>
+                                    <th class="sort" (click)="onSort('status')">Status
+                                    </th>
+                                    <th class="sort">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for(data of customers;track $index){
+                                <tr id="c_{{data._id}}">
+                                    <th scope="row">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="checkAll"
+                                                value="{{data._id}}" [(ngModel)]="data.state"
+                                                (change)="onCheckboxChange($event)">
+                                        </div>
+                                    </th>
+                                    <td>
+                                        <ngb-highlight [result]="data.customer" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td>
+                                        <ngb-highlight [result]="data.email" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td>
+                                        <ngb-highlight [result]="data.phone" [term]="searchTerm">
+                                        </ngb-highlight>
+                                    </td>
+                                    <td>
+                                        <ngb-highlight [result]="data.date | date :'longDate'"
+                                            [term]="searchTerm"></ngb-highlight>
+                                    </td>
+                                    <td class="status"><span class="badge text-uppercase"
+                                            [ngClass]=" { 'bg-success-subtle text-success': data.status === 'Active', 'bg-danger-subtle text-danger': data.status === 'Block' }">{{data.status}}</span>
+                                    </td>
+                                    <td>
+                                        <ul class="list-inline hstack gap-2 mb-0">
+                                            <li class="list-inline-item edit" ngbTooltip="Edit" placement="top">
+                                                <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                    class="text-primary d-inline-block edit-item-btn"
+                                                    (click)="editDataGet($index,content)">
+                                                    <i class="ri-pencil-fill fs-16"></i>
+                                                </a>
+                                            </li>
+                                            <li class="list-inline-item me-0" ngbTooltip="Remove" placement="top">
+                                                <a class="text-danger d-inline-block remove-item-btn"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteRecordModal"
+                                                    (click)="confirm(deleteModel,data._id)">
+                                                    <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row justify-content-md-between align-items-md-center">
+                        <div class="col col-sm-5">
+                            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                                Showing
+                                {{service.startIndex}} to
+                                {{service.endIndex}} of {{customerList?.length}}
+                                entries
+                            </div>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="col col-sm-5">
+                            <div class="text-sm-right float-sm-end listjs-pagination">
+                                <ngb-pagination [collectionSize]="customerList?.length" [(page)]="service.page" (pageChange)="changePage()"
+                                    [pageSize]="service.pageSize">
+                                </ngb-pagination>
+                            </div>
+                        </div>
+                        <!-- End Pagination -->
+                    </div>
+                </div>
+
+                <!-- Customer Create Model -->
+                <ng-template #content role="document" let-modal>
+                    <div class="modal-header bg-light p-3">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Customer</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            id="close-modal" (click)="modal.dismiss('Cross click')"></button>
+                    </div>
+                    <form (ngSubmit)="saveUser()" [formGroup]="customerForm" class="tablelist-form" autocomplete="off">
+                        <div class="modal-body">
+                            <input type="hidden" name="id" value="" formControlName="ids" />
+                            <div class="mb-3">
+                                <label for="customername-field" class="form-label">Customer Name</label>
+                                <input type="text" id="customername-field" class="form-control" placeholder="Enter Name"
+                                    required formControlName="customer"
+                                    [ngClass]="{ 'is-invalid': submitted && form['customer'].errors }" />
+                                <div class="invalid-feedback">Please enter a customer name.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email-field" class="form-label">Email</label>
+                                <input type="email" id="email-field" class="form-control" placeholder="Enter Email"
+                                    required formControlName="email"
+                                    [ngClass]="{ 'is-invalid': submitted && form['email'].errors }" />
+                                <div class="invalid-feedback">Please enter an email.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phone-field" class="form-label">Phone</label>
+                                <input type="text" id="phone-field" class="form-control" placeholder="Enter Phone no."
+                                    mask="000-000-0000" required formControlName="phone"
+                                    [ngClass]="{ 'is-invalid': submitted && form['phone'].errors }" />
+                                <div class="invalid-feedback">Please enter a phone.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="date-field" class="form-label">Joining Date</label>
+                                <input class="form-control flatpickr-input" type="text" mwlFlatpickr [altInput]="true"
+                                    [convertModelValue]="true" formControlName="date"
+                                    [ngClass]="{ 'is-invalid': submitted && form['date'].errors }">
+                                <div class="invalid-feedback">Please select a date.</div>
+                            </div>
+
+                            <div>
+                                <label for="status-field" class="form-label">Status</label>
+                                <select class="form-control" data-trigger name="status-field" id="status-field" required
+                                    formControlName="status"
+                                    [ngClass]="{ 'is-invalid': submitted && form['status'].errors }">
+                                    <option value="">Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Block">Block</option>
+                                </select>
+                                @if(submitted && form['status'].errors){
+                                <div class="invalid-feedback" align="left">
+                                    @if(form['status'].errors['required']){
+                                    <div>Status is required</div>
+                                    }
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="hstack gap-2 justify-content-end">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                                    (click)="modal.close('Close click')">Close</button>
+                                <button type="submit" class="btn btn-success" id="add-btn">Add Customer</button>
+                            </div>
+                        </div>
+                    </form>
+                </ng-template>
+                <!--End Modal -->
+                <!--end modal -->
+                <div id="elmLoader">
+                    <div class="spinner-border text-primary avatar-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--end col-->
+</div>
+<!--end row-->
+
+<!-- removeItemModal -->
+<ng-template #deleteModel let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deleteRecord-close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mt-2 text-center">
+                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                    colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                    <h4>Are you sure ?</h4>
+                    <p class="text-muted mx-4 mb-0">Are you sure you want to remove this record ?</p>
+                </div>
+            </div>
+            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal"
+                    (click)="modal.close('Close click')">Close</button>
+                <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteData(deleteId)"
+                    (click)="modal.close('Close click')">Yes, Delete It!</button>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</ng-template>

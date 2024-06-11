@@ -1,0 +1,40 @@
+<table class="table table-hover table-centered align-middle table-nowrap mb-0">
+    <tbody>
+        @for(data of BestSelling;track $index){
+        <tr>
+            <td>
+                <div class="d-flex align-items-center">
+                    <div class="avatar-sm bg-light rounded p-1 me-2">
+                        <img src="{{data.image}}" alt="" class="img-fluid d-block" />
+                    </div>
+                    <div>
+                        <h5 class="fs-14 my-1"><a href="ecommerce/product-detail/1" class="text-body">{{data.pName}}</a></h5>
+                        <span class="text-muted">{{data.date}}</span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <h5 class="fs-14 my-1 fw-normal">${{data.price}}</h5>
+                <span class="text-muted">Price</span>
+            </td>
+            <td>
+                <h5 class="fs-14 my-1 fw-normal">{{data.orders}}</h5>
+                <span class="text-muted">Orders</span>
+            </td>
+            <td>
+                @if(data.stock == 'Out of stock'){
+                <h5 class="fs-14 my-1 fw-normal"><span class="badge bg-danger-subtle text-danger">{{data.stock}}</span></h5>
+                }@else {
+                <h5 class="fs-14 my-1 fw-normal">{{data.stock}}</h5>
+                }
+                <span class="text-muted">Stock</span>
+            </td>
+            <td>
+                <h5 class="fs-14 my-1 fw-normal">${{data.amount}}</h5>
+                <span class="text-muted">Amount</span>
+            </td>
+        </tr>
+    }
+    </tbody>
+  </table>
+  

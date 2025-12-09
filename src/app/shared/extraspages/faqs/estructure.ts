@@ -53,7 +53,7 @@ export const FAQCategory = [
     title: "Preguntas Generales",
     icon: "ri-question-line",
     faqs: [
-      {question: "¿Qué es el sistema de Gestión de Emisiones Vehiculares - Provegaq?",
+      {question: "¿Qué es el sistema de Gestión getion y control de registro de Valorados - Sirevqui?",
         answer: "Es una plataforma que centraliza la inspección técnica de emisiones de gases, la emisión de certificados, la gestión de multas y el registro de vehículos, con el objetivo de reducir la contaminación ambiental según los reglamentos municipales."
       },
       {

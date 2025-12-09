@@ -192,7 +192,7 @@ export class ModalStaffComponent {
 
   private getSuggestedAvatar(user: any): string {
     const type = user.permisoDtos?.find((menu: any) => 
-      menu.modulo === 'DEPORTESAPP' && menu.nombreMenu === 'Administracion') ? 0 : 1;    
+      menu.modulo === 'SIREVQUI' && menu.nombreMenu === 'Configuraciones') ? 0 : 1;    
     const foundItem = UserRol.find(item => item.tipo === type);
     if (foundItem) {
       const gender = user.designacionFuncionarioDto?.personaDto?.sexo;

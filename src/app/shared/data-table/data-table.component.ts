@@ -130,7 +130,7 @@ export class DataTableComponent {
   changeItem(item: any) { this.changeItemEmitter.emit(item); }
   toggleItem(item: any) { this.toggleItemEmitter.emit(item); }
   sentMessage(item: any) {
-    // https://api.whatsapp.com/send?phone=+59172248669&text=MENSAJE DESDE SISTEMA DE DEPORTES"
+    // https://api.whatsapp.com/send?phone=+59172248669&text=MENSAJE DESDE SISTEMA DE SIREVQUI"
   }
 
 

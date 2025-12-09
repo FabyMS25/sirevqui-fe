@@ -145,12 +145,12 @@
                 </div>
             </div>
             <div class="col-lg-12">
-                    <label for="userUuid" class="form-label mb-0">
+                    <label for="uuidUsuario" class="form-label mb-0">
                         <i class="ri-user-line me-2"></i>Usuario <span class="text-danger">*</span>
                     </label>
-                    <select class="form-select" id="userUuid" formControlName="userUuid" required
+                    <select class="form-select" id="uuidUsuario" formControlName="uuidUsuario" required
                         (change)="onUserSelectHandler($event)"
-                        [ngClass]="{ 'is-invalid': submitted && form['userUuid'].errors }">
+                        [ngClass]="{ 'is-invalid': submitted && form['uuidUsuario'].errors }">
                         <option value="" disabled>Seleccione un usuario...</option>
                         <option [value]="user.uuid" *ngFor="let user of usersList">
                             {{ user.designacionFuncionarioDto?.personaDto?.fullName || user.username || 'Sin nombre' }}
@@ -159,8 +159,8 @@
                             </span>
                         </option>
                     </select>
-                    <div *ngIf="submitted && form['userUuid'].errors" class="invalid-feedback">
-                        <div *ngIf="form['userUuid'].errors['required']">
+                    <div *ngIf="submitted && form['uuidUsuario'].errors" class="invalid-feedback">
+                        <div *ngIf="form['uuidUsuario'].errors['required']">
                             <i class="ri-error-warning-line me-1"></i>Debe seleccionar un Usuario
                         </div>
                     </div>

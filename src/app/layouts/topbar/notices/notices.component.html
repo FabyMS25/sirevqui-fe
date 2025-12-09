@@ -1,0 +1,211 @@
+
+
+                <div ngbDropdown [autoClose]="false" class="dropdown topbar-head-dropdown ms-1 header-item">
+                    <button type="button" ngbDropdownToggle class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class='bx bx-bell fs-22'></i>
+                        <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span class="visually-hidden">unread messages</span></span>
+                    </button>
+                    <div ngbDropdownMenu class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
+
+                        <div class="dropdown-head bg-secondary bg-pattern rounded-top">
+                            <div class="p-3">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="m-0 fs-16 fw-semibold text-white"> Notifications </h6>
+                                    </div>
+                                    <div class="col-auto dropdown-tabs">
+                                        <span class="badge bg-light text-body fs-13"> {{allnotifications?.length}} New</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="px-2 pt-2">
+                                <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav nav-tabs dropdown-tabs nav-tabs-custom" id="notificationItemsTab">
+                                    <li [ngbNavItem]="1">
+                                        <a ngbNavLink>
+                                            All ({{allnotifications?.length}})
+                                        </a>
+                                        <ng-template ngbNavContent>
+                                            <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
+                                                <ngx-simplebar style="max-height: 300px;">
+                                                    <div class="pe-2">
+                                                        @for(item of allnotifications;track $index){
+                                                        <div class="text-reset notification-item d-block dropdown-item position-relative">
+                                                            <div class=" d-flex">
+                                                                @if(item.img){
+                                                                <img src="{{item.img}}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                                                <div class="flex-grow-1">
+                                                                    <a href="javascript:void(0);" class="stretched-link">
+                                                                        <h6 class="mt-0 mb-1 fs-13 fw-semibold">{{item.title}}</h6>
+                                                                    </a>
+                                                                    <div class="fs-13 text-muted">
+                                                                        <p class="mb-1">{{item.desc}}</p>
+                                                                    </div>
+                                                                    <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                                        <span><i class="mdi mdi-clock-outline"></i> {{item.time}}</span>
+                                                                    </p>
+                                                                </div>
+                                                                }@else {
+                                                                <div class="avatar-xs me-3">
+                                                                    <span class="avatar-title bg-info-subtle text-info rounded-circle fs-16">
+                                                                        <i class="bx {{item.icon}}"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="flex-grow-1">
+                                                                    <a href="javascript:void(0);" class="stretched-link">
+                                                                        <h6 class="mt-0 mb-2 lh-base">{{item.desc}}
+                                                                        </h6>
+                                                                    </a>
+                                                                    <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                                        <span><i class="mdi mdi-clock-outline"></i>{{item.time}}</span>
+                                                                    </p>
+                                                                </div>
+                                                                }
+
+
+                                                                <div class="px-2 fs-15">
+                                                                    <input class="form-check-input" type="checkbox" [(ngModel)]="item.state" (change)="onCheckboxChange($event,'1')" value="{{item.id}}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        } @empty{
+                                                        <div class="tab-pane p-4" id="alerts-tab" role="tabpanel" aria-labelledby="alerts-tab">
+                                                            <div class="w-25 w-sm-50 pt-3 mx-auto">
+                                                                <img src="assets/images/svg/bell.svg" class="img-fluid" alt="user-pic">
+                                                            </div>
+                                                            <div class="text-center pb-5 mt-2">
+                                                                <h6 class="fs-18 fw-semibold lh-base">
+                                                                    Hey! No tienes ninguna notificación </h6>
+                                                            </div>
+                                                        </div>
+                                                        }
+                                                        @if(allnotifications?.length > 0){
+                                                        <div class="my-3 text-center">
+                                                            <button type="button" class="btn btn-soft-success waves-effect waves-light">
+                                                                Ver todas las notificaciones <i class="ri-arrow-right-line align-middle"></i></button>
+                                                        </div>
+                                                        }
+                                                    </div>
+
+
+                                                </ngx-simplebar>
+                                            </div>
+                                        </ng-template>
+                                    </li>
+                                    <li [ngbNavItem]="2">
+                                        <a ngbNavLink>
+                                            Mensajes
+                                        </a>
+                                        <ng-template ngbNavContent>
+                                            <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
+                                                <ngx-simplebar style="max-height: 300px;">
+                                                    <div class="pe-2">
+                                                        @for(message of messages;track $index){
+                                                        <div class="text-reset notification-item d-block dropdown-item">
+                                                            <div class="d-flex">
+                                                                <img src="{{message.avatar}}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                                                <div class="flex-grow-1">
+                                                                    <a href="javascript:void(0);" class="stretched-link">
+                                                                        <h6 class="mt-0 mb-1 fs-13 fw-semibold">{{message.name}}</h6>
+                                                                    </a>
+                                                                    <div class="fs-13 text-muted">
+                                                                        <p class="mb-1">{{message.message}}</p>
+                                                                    </div>
+                                                                    <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                                        <span><i class="mdi mdi-clock-outline"></i> {{message.time_ago}}</span>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="px-2 fs-15">
+                                                                    <input class="form-check-input" type="checkbox" value="{{message.id}}" [(ngModel)]="message.state" (change)="onCheckboxChange($event,'2')" id="{{message.checkboxId}}">
+                                                                    <label class="form-check-label" for="{{message.checkboxId}}"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        }@empty {
+                                                        <div class="tab-pane p-4" id="alerts-tab" role="tabpanel" aria-labelledby="alerts-tab">
+                                                            <div class="w-25 w-sm-50 pt-3 mx-auto">
+                                                                <img src="assets/images/svg/bell.svg" class="img-fluid" alt="user-pic">
+                                                            </div>
+                                                            <div class="text-center pb-5 mt-2">
+                                                                <h6 class="fs-18 fw-semibold lh-base">
+                                                                    Hey! No tienes ninguna notificacón
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                        }
+                                                        @if(messages?.length > 0){
+                                                        <div class="my-3 text-center">
+                                                            <button type="button" class="btn btn-soft-success waves-effect waves-light">
+                                                                Ver todos los mensajes <i class="ri-arrow-right-line align-middle"></i>
+                                                            </button>
+                                                        </div>
+                                                        }
+                                                    </div>
+
+
+                                                </ngx-simplebar>
+                                            </div>
+                                        </ng-template>
+                                    </li>
+                                    <li [ngbNavItem]="3">
+                                        <a ngbNavLink>
+                                            Alerts
+                                        </a>
+                                        <ng-template ngbNavContent>
+                                            <div class="tab-pane p-4" id="alerts-tab" role="tabpanel" aria-labelledby="alerts-tab">
+                                                <div class="w-25 w-sm-50 pt-3 mx-auto">
+                                                    <img src="assets/images/svg/bell.svg" class="img-fluid" alt="user-pic">
+                                                </div>
+                                                <div class="text-center pb-5 mt-2">
+                                                    <h6 class="fs-18 fw-semibold lh-base">Hey! You have no any
+                                                        notifications </h6>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-content" id="notificationItemsTabContent">
+                            <div class="tab-content text-muted">
+                                <div [ngbNavOutlet]="nav"></div>
+                            </div>
+                        </div>
+
+                        <div class="notification-actions" id="notification-actions">
+                            <div class=" d-flex text-muted justify-content-center">
+                                Select <div id="select-content" class="text-body fw-semibold px-1">{{checkedValGet.length}}</div> Result <button type="button" class="btn btn-link link-danger p-0 ms-3" data-bs-toggle="modal" (click)="openModal(removenotification)" data-bs-target="#removeNotificationModal">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                
+<!-- removeNotificationModal -->
+<ng-template #removenotification let-modal>
+    <!-- <div class="modal-dialog modal-dialog-centered"> -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="NotificationModalbtn-close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mt-2 text-center">
+                <!-- <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon> -->
+                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                    <h4>Are you sure ?</h4>
+                    <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Notification ?</p>
+                </div>
+            </div>
+            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal" (click)="modal.dismiss('Cross click')">Close</button>
+                <button type="button" class="btn w-sm btn-danger" id="delete-notification" (click)="notificationDelete()">Yes, Delete It!</button>
+            </div>
+        </div>
+
+    </div><!-- /.modal-content -->
+
+</ng-template>

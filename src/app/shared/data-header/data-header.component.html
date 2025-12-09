@@ -1,0 +1,61 @@
+
+
+<div class="card rounded-3 mb-2 ">
+        <div class="card-header d-flex flex-wrap align-items-center">
+            <h5 class="card-title flex-grow-1">{{'Lista de '+title|translate }}</h5>
+            <div class="flex-shrink-0">
+                <div class="d-flex gap-1 flex-wrap">
+                    <button *ngIf="newShow" (click)="openPopup()"
+                      type="button" class="btn btn-secondary add-btn" data-bs-toggle="modal">
+                      <i class="ri-add-circle-line align-middle"></i> 
+                      {{"Agregar" | translate}}
+                    </button>
+                    <button *ngIf="consultShow" (click)="consult()"
+                      type="button" class="btn btn-info add-btn" data-bs-toggle="modal">
+                      <i class="ri-refresh-line align-middle"></i> 
+                      {{"Consultar" | translate}}
+                    </button>
+                    <button *ngIf="notifyShow" (click)="notify()"
+                      type="button" class="btn btn-success add-btn" data-bs-toggle="modal">
+                      <i class="ri-mail-send-fill align-middle"></i> 
+                      {{"Notificación Masiva" | translate}}
+                    </button>  
+                    <button *ngIf="importShow" (click)="import($event)" 
+                        class="btn btn-soft-primary" >
+                        <i class="ri-file-upload-line align-bottom"></i>
+                        {{"Importar" | translate}}
+                    </button> 
+                    <button *ngIf="importShow && headersImport.length>0" (click)="downloadExcelTemplate()"
+                        class="btn btn-soft-success">
+                        <i class="ri-download-2-line align-bottom"></i>
+                        {{ "Descargar plantilla" | translate }}
+                    </button>                  
+                    <button *ngIf="exportShow" (click)="csvFileExport($event)" 
+                        class="btn btn-soft-info" id="remove-actions" style="display: none">
+                        <i class="ri-file-download-line align-bottom"></i>
+                        {{"Exportar" | translate}}
+                    </button>
+                </div>
+            </div>                
+        </div>
+            <!-- <button  *ngIf="importShow" type="button" class="btn btn-outline-success " 
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                (click)="import($event)">
+                <i class="bi bi-filetype-xlsx"></i> Importar
+            </button>
+            <button *ngIf="exportShow" type="button" class="btn btn-outline-success" 
+                (click)="csvFileExport($event)">
+                <i class="bi bi-file-earmark-arrow-down align-bottom me-1"></i> Exportar
+            </button> -->
+          <!-- <button class="btn btn-soft-danger" id="remove-actions" style="display: none"
+            (click)="deleteMultiple(deleteModel)"><i class="ri-delete-bin-2-line"></i></button> -->
+      
+                <!-- <div class="search-box">
+                    <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i>&nbsp;</span>
+                    <input search type="text" name="searchTerm" class="form-control"
+                        placeholder="Buscar" id="search"
+                        (keyup)="filterList($event)">
+                    </div>
+                </div> -->
+</div>

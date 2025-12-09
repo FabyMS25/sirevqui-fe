@@ -8,6 +8,10 @@
                 <ol class="breadcrumb m-0">
                 @for(item of breadcrumbItems;track $index){
                   <ng-container>
+                    <li class="breadcrumb-item" [ngClass]="{'active': item.active == true}">
+                      <i class="ri-home-2-line" *ngIf="!item.label"></i>
+                        {{ (item.label ?? '') | translate }}
+                    </li>   
                     <li class="breadcrumb-item" [ngClass]="{'active': item.active == true}">{{ item.label }}
                     </li>
                 </ng-container>

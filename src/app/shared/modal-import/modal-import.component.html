@@ -1,0 +1,69 @@
+<div class="modal-header">
+    <h5 class="modal-title" ngbAutofocus>Importar Datos</h5>
+    <button
+        [disabled]="loading"
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="closeModal()">
+    </button>
+</div>
+<div class="modal-body">
+    <div class="alert-primary mb-3">
+        <blockquote class="blockquote custom-blockquote blockquote-primary rounded mb-0">
+            <strong class="text-primary"> Nota: </strong>
+            <p class="text-body mb-2">Solo se guardarán los registros que no existan, los registros que ya existan no se tomaran en cuenta.</p>
+            <!-- <footer class="blockquote-footer mt-0"> <cite title="Source Title"></cite></footer> -->
+        </blockquote>
+    </div>
+    <div class="row d-flex justify-content-center mb-3">
+        <div class="col-12 col-lg-6 mb-3">
+            <input
+                class="form-control shadow-none rounded-3"
+                placeholder="Cargar datos desde Excel"
+                type="file"
+                (change)="loadDatafromExcel($event)"
+                [multiple]="false"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+            <div class="d-flex justify-content-between rounded-3 border ps-3">
+                <span class="d-flex align-items-center"><i class="bi bi-search"></i></span>
+                <input
+                    type="text"
+                    class="form-control rounded-3 border-0 shadow-none"
+                    placeholder="Buscar ..."
+                    (keyup)="search($event)">
+            </div>
+        </div>
+    </div>
+    <app-data-table
+        *ngIf="xlsxData.length > 0"
+        [loading]="loading"
+        [itemsList]="titles"
+        [allcontent]="xlsxData"
+        (selectedItemEmitter)="getSelectedItems($event)">
+    </app-data-table>
+</div>
+
+<div class="modal-footer">
+    <button
+        [disabled]="xlsxData.length <= 0 || loading"
+        type="button"
+        class="btn btn-outline-primary rounded-3"
+        (click)="createRegisterfromXlsx(selectedItems)">
+        <span
+            *ngIf="loading"
+            class="spinner-border spinner-border-sm"
+            aria-hidden="true">
+        </span>
+        {{loading ? 'Importando...':'Importar'}}
+    </button>
+    <button
+        [disabled]="loading"
+        type="button"
+        class="btn btn-outline-secondary rounded-3"
+        (click)="closeModal()">
+        Cancelar
+    </button>
+</div>

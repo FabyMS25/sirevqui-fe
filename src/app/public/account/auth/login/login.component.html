@@ -1,0 +1,125 @@
+<div class="auth-page-wrapper pt-5">
+  <div class="auth-one-bg-position auth-one-bg"  id="auth-particles">
+      <div class="bg-overlay"></div>
+      <div class="shape">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 120">
+              <path d="M 0,36 C 144,53.6 432,123.2 720,124 C 1008,124.8 1296,56.8 1440,40L1440 140L0 140z"></path>
+          </svg>
+      </div>
+  </div>
+
+  <div class="auth-page-content">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="text-center mb-2 text-white-50">
+                      <div>
+                          <a href="/" class="d-inline-block auth-logo">
+                              <img src="assets/images/logos/LOGO-COMPUESTO-LARGO.png " alt="" height="90">
+                          </a>
+                      </div>
+                      <p class="mt-2 fs-15 fw-medium">Sistema de Valorados GAMQ - {{APP_NAME}}</p>
+                  </div>
+              </div>
+          </div>
+          <!-- end row -->
+
+          <div class="row justify-content-center">
+              <div class="col-md-8 col-lg-6 col-xl-5">
+                  <div class="card mt-4">
+
+                      <div class="card-body p-4">
+                          <div class="text-center mt-2">
+                              <h5 class="text-primary">Bienvenido !</h5>
+                              <p class="text-muted">Ingresa tus credenciales para continuar.</p>
+                          </div>
+                          <div class="p-2 mt-4">                            
+                            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                                <!-- Username Field -->
+                                <div class="mb-3">
+                                  <label class="form-label" for="username">Usuario</label>
+                                  <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="username" 
+                                    formControlName="username"
+                                    [ngClass]="{ 'is-invalid': submitted && form['username'].errors }"
+                                    placeholder="Ingresar usuario"
+                                  />
+                                  <div *ngIf="submitted && form['username'].errors" class="invalid-feedback">
+                                    <div *ngIf="form['username'].errors['required']">El Usuario es requerido</div>
+                                  </div>
+                                </div>                              
+                                <!-- Password Field -->
+                                <div class="mb-3">
+                                  <!-- <div class="float-end">
+                                    <a routerLink="/auth/pass-reset" class="text-muted">Olvidaste tu contraseña?</a>
+                                  </div> -->
+                                  <label class="form-label" for="password-input">Contraseña</label>
+                                  <div class="position-relative auth-pass-inputgroup mb-3">
+                                    <input 
+                                      [type]="fieldTextType ? 'text' : 'password'" 
+                                      class="form-control pe-5" 
+                                      placeholder="Ingresar Contraseña" 
+                                      id="password-input" 
+                                      formControlName="password"
+                                      [ngClass]="{ 'is-invalid': submitted && form['password'].errors }"
+                                    />
+                                    <button 
+                                      class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" 
+                                      type="button" 
+                                      id="password-addon"
+                                      (click)="toggleFieldTextType()"
+                                    >
+                                      <i class="mdi align-middle" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType }"></i>
+                                    </button>
+                                    <div *ngIf="submitted && form['password'].errors" class="invalid-feedback">
+                                      <div *ngIf="form['password'].errors['required']">Debe ingresar su contraseña</div>
+                                    </div>
+                                  </div>
+                                </div>                              
+                                <!-- Form-level Error Messages -->
+                                <div *ngIf="loginForm.errors?.['invalidLogin']" class="alert alert-danger">
+                                  Usuario o contraseña incorrectos
+                                </div>
+                                <div *ngIf="loginForm.errors?.['invalidPermissions']" class="alert alert-danger">
+                                  No tiene permisos para acceder a este módulo
+                                </div>
+                                <div *ngIf="loginForm.errors?.['serverError']" class="alert alert-danger">
+                                  Ocurrió un error en el servidor. Por favor, intente nuevamente.
+                                </div>
+                                <div *ngIf="backendError" class="alert alert-danger">
+                                  El sistema no está disponible en este momento. Por favor, intente más tarde.
+                                </div>
+                                <div class="mt-4">
+                                  <button class="btn btn-success w-100" type="submit">Ingresar</button>
+                                </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- <div class="mt-4 text-center">
+                      <p class="mb-0">No tienes una cuenta ? <a routerLink="/auth/signup-check" class="fw-semibold text-primary text-decoration-underline"> Registrarse </a> </p>
+                  </div> -->
+
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <footer class="footer">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="text-center">
+                      <p class="mb-0 text-muted">&copy; {{year}} G.A.M.Q. <i class="mdi mdi-heart text-danger"></i> 
+                        Jefatura de Tecnologias de Informacion.</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </footer>  
+</div>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

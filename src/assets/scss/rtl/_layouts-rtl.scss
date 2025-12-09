@@ -778,3 +778,15 @@
         margin-right: 0 !important;
     }
 }
+
+[data-layout="semibox"] {
+    @media (min-width: 1440px) {
+        .main-content {
+            margin-left: 0;
+        }
+        #page-topbar {
+            left: 134px;
+            right: 385px;
+        }
+    }
+}

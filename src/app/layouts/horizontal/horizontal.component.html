@@ -1,5 +1,5 @@
 <div id="layout-wrapper">
-    <!-- Top Bar -->
+    
     <app-topbar (mobileMenuButtonClicked)="onToggleMobileMenu()"></app-topbar>
     <!-- Side Bar -->
     <!-- <app-sidebar></app-sidebar> -->
@@ -11,9 +11,8 @@
                 <router-outlet></router-outlet>
             </div>
         </div>
-        <!-- Footer -->
         <app-footer></app-footer>
     </div>
   </div>
-  <!-- Right Side Bar -->
+  
   <app-rightsidebar  (settingsButtonClicked)="onSettingsButtonClicked()"></app-rightsidebar>

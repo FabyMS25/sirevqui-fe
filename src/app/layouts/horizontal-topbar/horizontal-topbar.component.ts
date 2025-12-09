@@ -1,12 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-
-// Menu Pachage
-// import MetisMenu from 'metismenujs';
-
-import { MENU } from './menu';
-import { MenuItem } from './menu.model';
+import { MenuItem } from 'src/app/core/models/menu.model';
 
 @Component({
   selector: 'app-horizontal-topbar',
@@ -26,7 +21,8 @@ export class HorizontalTopbarComponent implements OnInit {
 
   ngOnInit(): void {
     // Menu Items
-    this.menuItems = MENU;
+    const menu = localStorage.getItem('menu');
+    this.menuItems =menu ? JSON.parse(menu) : null;
   }
 
   /***
@@ -137,7 +133,7 @@ export class HorizontalTopbarComponent implements OnInit {
    * @param item menuItem
    */
   hasItems(item: MenuItem) {
-    return item.subItems !== undefined ? item.subItems.length > 0 : false;
+    return item.permisoHijoListDto !== undefined ? item.permisoHijoListDto.length > 0 : false;
   }
 
   /**
@@ -149,5 +145,15 @@ export class HorizontalTopbarComponent implements OnInit {
       els[0].classList.remove(className);
     }
   }
-
+  getSubMenu(menuItems:any[]):any[]{
+    const commonItems = menuItems.filter(item1 => this.menuItems.some(item2 => item1.nombreMenu === item2.nombreMenu));
+    const uniqueMenuItemsMap = commonItems.reduce((map, item) => {
+      if (!map.has(item.nombreMenu)) {
+        map.set(item.nombreMenu, item);
+      }
+      return map;
+    }, new Map<string, any>());
+  
+    return Array.from(uniqueMenuItemsMap.values());
+  }
 }

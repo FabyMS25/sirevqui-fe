@@ -1,0 +1,25 @@
+export interface Person {
+    uuid?: string,
+    estado?: string,
+    regProfesional: string,
+    prefijo: string,
+    profesion: string,
+    fechaIngreso: string,
+    codUnidad: string,
+    
+
+    nroCarnet: string,
+    ciExpedito: string,
+    nroNit: string,
+    nombre: string,
+    apPaterno: string,
+    apMaterno: string,
+    sexo: string,
+    estadoCivil: string,
+    nroCelular: string,
+    nroTelefono?: string,
+    correoElectronico: string,
+    direccion: string,
+    fullCarnet: string,
+    fullName: string,
+}

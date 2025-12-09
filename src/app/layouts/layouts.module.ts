@@ -20,14 +20,14 @@ import { HorizontalComponent } from './horizontal/horizontal.component';
 import { HorizontalTopbarComponent } from './horizontal-topbar/horizontal-topbar.component';
 import { TwoColumnComponent } from './two-column/two-column.component';
 import { TwoColumnSidebarComponent } from './two-column-sidebar/two-column-sidebar.component';
-
-
+import { NoticesComponent } from './topbar/notices/notices.component';
 
 @NgModule({
   declarations: [
     LayoutComponent,
     VerticalComponent,
     TopbarComponent,
+    NoticesComponent,
     SidebarComponent,
     FooterComponent,
     RightsidebarComponent,
@@ -45,7 +45,8 @@ import { TwoColumnSidebarComponent } from './two-column-sidebar/two-column-sideb
     SimplebarAngularModule,
     TranslateModule,
     NgbCollapseModule,
-    FormsModule, ReactiveFormsModule
+    FormsModule, 
+    ReactiveFormsModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

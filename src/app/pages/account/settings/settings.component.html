@@ -1,0 +1,281 @@
+<div class="position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg profile-setting-img">
+        <img src="assets/images/auth-one-bg.jpg" alt="" class="profile-wid-img" />
+        <div class="overlay-content">
+            <div class="text-end p-3">
+                <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+                    <!-- <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+                    <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
+                        <i class="ri-image-edit-line align-bottom me-1"></i> Cambiar Portada
+                    </label> -->                    
+                    <button class="btn btn-primary add-btn" (click)="openModal()">
+                        <i class="ri-edit-fill me-1 align-bottom"></i> 
+                        Cambiar Contraseña
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xxl-3">
+        <div class="card mt-n5">
+            <div class="card-body p-4">
+                <div class="text-center">
+                    <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                        <img [src]="'assets/icons/users/'+avatar" 
+                            class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
+                        <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
+                            <input id="profile-img-file-input" type="file" class="profile-img-file-input">
+                            <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                                <span class="avatar-title rounded-circle bg-light text-body">
+                                    <i class="ri-camera-fill"></i>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <h5 class="fs-16 mb-1">
+                        {{userData.designacion? userData.designacion.personaDto.fullName : userData.nombre+" "+userData.apPaterno+" "+userData.apMaterno}}
+                    </h5>
+                    <p class="text-muted mb-0">{{userData.email?userData.email:userData.correo}}</p>
+                </div>
+            </div>
+        </div>
+    </div><!--end col-->
+    <div class="col-xxl-9">
+        <div class="card mt-xxl-n5">
+            <div class="card-header">
+                <ul ngbNav #customNav="ngbNav" [activeId]="1"
+                    class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                    <li [ngbNavItem]="1" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="fas fa-home"></i>
+                            Datos Personales
+                        </a>
+                        <ng-template ngbNavContent>
+                            <!-- persona-form.component.html -->
+                            <form [formGroup]="personaForm" (ngSubmit)="saveData()" class="tablelist-form">
+                                <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre(s)</label>
+                                    <input type="text" class="form-control" id="nombre" formControlName="nombre"
+                                        placeholder="Ingresa tu Nombre" [ngClass]="{'is-invalid': personaForm.get('nombre')?.touched && personaForm.get('nombre')?.invalid}">
+                                    <div class="invalid-feedback" *ngIf="personaForm.get('nombre')?.touched && personaForm.get('nombre')?.invalid">
+                                        El nombre es requerido.
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                    <label for="apPaterno" class="form-label">Primer Apellido</label>
+                                    <input type="text" class="form-control" id="apPaterno" formControlName="apPaterno"
+                                        placeholder="Ingresa tu Apellido Paterno" [ngClass]="{'is-invalid': personaForm.get('apPaterno')?.touched && personaForm.get('apPaterno')?.invalid}">
+                                    <div class="invalid-feedback" *ngIf="personaForm.get('apPaterno')?.touched && personaForm.get('apPaterno')?.invalid">
+                                        El apellido paterno es requerido.
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                    <label for="apMaterno" class="form-label">Segundo Apellido</label>
+                                    <input type="text" class="form-control" id="apMaterno" formControlName="apMaterno"
+                                        placeholder="Ingresa tu Apellido Materno" [ngClass]="{'is-invalid': personaForm.get('apMaterno')?.touched && personaForm.get('apMaterno')?.invalid}">
+                                    <div class="invalid-feedback" *ngIf="personaForm.get('apMaterno')?.touched && personaForm.get('apMaterno')?.invalid">
+                                        El apellido materno es requerido.
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                    <label for="sexo" class="form-label">Genero:</label>
+                                    <select class="form-control" formControlName="sexo" id="sexo"
+                                        [ngClass]="{'is-invalid': personaForm.get('sexo')?.touched && personaForm.get('sexo')?.invalid}">
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                    </select>
+                                    <div class="invalid-feedback" *ngIf="personaForm.get('sexo')?.touched && personaForm.get('sexo')?.invalid">
+                                        El género es requerido.
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                    <label for="nroCarnet" class="form-label">Nro Carnet:</label>
+                                    <input type="text" class="form-control" formControlName="nroCarnet" readonly 
+                                        placeholder="Ingresar Numero de Carnet" 
+                                        [ngClass]="{'is-invalid': personaForm.get('nroCarnet')?.touched && personaForm.get('nroCarnet')?.invalid}">
+                                    <div class="invalid-feedback" *ngIf="personaForm.get('nroCarnet')?.touched && personaForm.get('nroCarnet')?.invalid">
+                                        El número de carnet es requerido y debe tener entre 5 y 20 caracteres.
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-lg-6">
+                                    <div class="mb-3">                                          
+                                        <label for="expedido" class="form-label">Expedido</label>
+                                        <input type="text" class="form-control" formControlName="expedido" readonly 
+                                            [ngClass]="{'is-invalid': personaForm.get('expedido')?.touched && personaForm.get('expedido')?.invalid}">
+                                        <!-- <select class="form-control" formControlName="expedido" id="expedido" [disabled]="true"
+                                            [ngClass]="{'is-invalid': personaForm.get('expedido')?.touched && personaForm.get('expedido')?.invalid}">
+                                            @if(userType==='Contribuyente'){ 
+                                                <option *ngFor="let city of CityAcronym" [value]="city.id" >
+                                                {{city.description}}
+                                                </option>
+                                            }@else{                                                
+                                                <option *ngFor="let city of CityAcronym" [value]="city.acromyn" >
+                                                    {{city.description}}
+                                                </option>
+                                            }
+                                        </select> -->
+                                        <div class="invalid-feedback" *ngIf="personaForm.get('ciExpedido')?.touched && personaForm.get('ciExpedido')?.invalid">
+                                            El campo es requerido.
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                    <label for="nroCelular" class="form-label">Nro Celular:</label>
+                                    <input type="text" class="form-control" formControlName="nroCelular"
+                                        placeholder="Ingresa tu Nro de Celular" [ngClass]="{'is-invalid': personaForm.get('nroCelular')?.touched && personaForm.get('nroCelular')?.invalid}">
+                                    <div class="invalid-feedback" *ngIf="personaForm.get('nroCelular')?.touched && personaForm.get('nroCelular')?.invalid">
+                                        Ingrese un número de celular válido (8 dígitos).
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                    <label for="correoElectronico" class="form-label">Email:</label>
+                                    <input type="email" class="form-control" formControlName="correoElectronico"
+                                        placeholder="Ingresa tu CorreoElectronico" [ngClass]="{'is-invalid': personaForm.get('correoElectronico')?.touched && personaForm.get('correoElectronico')?.invalid}">
+                                    <div class="invalid-feedback" *ngIf="personaForm.get('correoElectronico')?.touched && personaForm.get('correoElectronico')?.invalid">
+                                        Ingrese un correo electrónico válido.
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                    <label for="direccion" class="form-label">Dirección</label>
+                                    <input type="text" class="form-control" formControlName="direccion"
+                                        placeholder="Ingrese su Direccion" [ngClass]="{'is-invalid': personaForm.get('direccion')?.touched && personaForm.get('direccion')?.invalid}">
+                                    <div class="invalid-feedback" *ngIf="personaForm.get('direccion')?.touched && personaForm.get('direccion')?.invalid">
+                                        La dirección es requerida.
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-lg-12">
+                                    <div class="hstack gap-2 justify-content-end">
+                                    <button type="submit" class="btn btn-secondary" [disabled]="personaForm.invalid">Actualizar</button>
+                                    <button type="button" class="btn btn-soft-danger" (click)="goBack()">Cancelar</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </form>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2" class="nav-item" *ngIf="userData.designacion">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="far fa-envelope"></i>
+                            Datos de Designacion
+                        </a>
+                        <ng-template ngbNavContent>
+                            <form>
+                                <div id="newlink">
+                                    <div id="1">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="mb-3">
+                                                    <label for="unidad" class="form-label">Unidad</label>
+                                                    <input type="text" class="form-control" id="unidad" placeholder="Unidad" 
+                                                        value="{{userData.designacion.gestionCargoDto.cargoDto.unidad}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="mb-3">
+                                                    <label for="fechaInicio" class="form-label">Fecha de Adjudicacion</label>
+                                                    <div class="row">
+                                                        <div class="col-lg-1 align-self-center">
+                                                            Del
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <input class="form-control flatpickr-input" type="text"
+                                                                mwlFlatpickr [altInput]="true"
+                                                                [convertModelValue]="true" value="{{userData.designacion.fechaInicio}}">
+                                                        </div>
+                                                        <div class="col-lg-1 align-self-center ">
+                                                            al
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <input class="form-control flatpickr-input" type="text"
+                                                                mwlFlatpickr [altInput]="true"
+                                                                [convertModelValue]="true" value="{{userData.designacion.fechaFin}}">
+                                                        </div>
+                                                    </div>    
+                                                </div>
+                                            </div><!--end col-->
+                                        </div>
+                                        <!--end row-->
+                                    </div>
+                                </div>
+                            </form>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="3" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="far fa-envelope"></i>
+                            Terminos y Condiciones de Uso
+                        </a>
+                        <ng-template ngbNavContent>
+                            <app-terms-conditions
+                                [buttons]="userType !='Contribuyente'"
+                            ></app-terms-conditions>
+                            <div class="px-4" *ngIf="userType ==='Contribuyente'">
+                                <h5 class="card-title text-decoration-underline mb-3">Eliminar esta cuenta:</h5>
+                                <p class="text-muted">
+                                    Una vez elimine su cuenta no podra recuperar sus Datos.
+                                    Ingrese su contraseña para elimar su cuenta
+                                </p>
+                                <div>
+                                    <input type="password" class="form-control" id="passwordInput"
+                                        placeholder="Ingresa tu contraseña" 
+                                        style="max-width: 265px;" 
+                                        [(ngModel)]="password"> 
+                                </div>
+                                <div class="hstack gap-2 mt-3 justify-end">
+                                    <a (click)="deleteAccount()" class="btn btn-soft-danger">
+                                        Cerrar & Eliminar esta cuenta
+                                    </a>
+                                    <a (click)="goBack()" class="btn btn-light">Volver</a>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="4" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="far fa-envelope"></i>
+                            Politicas y Privacidad
+                        </a>
+                        <ng-template ngbNavContent>
+                            <app-privacy-policy
+                            ></app-privacy-policy>
+                        </ng-template>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body p-4">
+                <div class="tab-content">
+                    <div [ngbNavOutlet]="customNav"></div>
+                </div>
+            </div>
+        </div>
+    </div><!--end col-->
+</div><!--end row-->

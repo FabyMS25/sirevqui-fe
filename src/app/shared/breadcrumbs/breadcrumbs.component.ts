@@ -6,9 +6,6 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./breadcrumbs.component.scss']
 })
 
-/**
- * Bread Crumbs Component
- */
 export class BreadcrumbsComponent implements OnInit {
 
   @Input() title: string | undefined;

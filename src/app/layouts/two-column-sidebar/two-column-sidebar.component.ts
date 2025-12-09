@@ -1,9 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-
-import { MENU } from './menu';
-import { MenuItem } from './menu.model';
+import { MenuItem } from 'src/app/core/models/menu.model';
 
 @Component({
   selector: 'app-two-column-sidebar',
@@ -18,12 +16,13 @@ export class TwoColumnSidebarComponent implements OnInit {
   @Output() mobileMenuButtonClicked = new EventEmitter();
 
   constructor(private router: Router, public translate: TranslateService) {
-    translate.setDefaultLang('en');
+    translate.setDefaultLang('es');
   }
 
   ngOnInit(): void {
     // Menu Items
-    this.menuItems = MENU;
+    const menu = localStorage.getItem('menu');
+    this.menuItems =menu ? JSON.parse(menu) : null;
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.initActiveMenu();
@@ -42,8 +41,8 @@ export class TwoColumnSidebarComponent implements OnInit {
 
   toggleSubItem(item: any) {
     this.menuItems.forEach((menuItem: any) => {
-      if (menuItem.subItems) {
-        menuItem.subItems.forEach((subItem: any) => {
+      if (menuItem.permisoHijoListDto) {
+        menuItem.permisoHijoListDto.forEach((subItem: any) => {
 
           if (subItem == item) {
             menuItem.isCollapsed = !menuItem.isCollapsed
@@ -51,8 +50,8 @@ export class TwoColumnSidebarComponent implements OnInit {
           } else {
             subItem.isCollapsed = true
           }
-          if (subItem.subItems) {
-            subItem.subItems.forEach((childitem: any) => {
+          if (subItem.permisoHijoListDto) {
+            subItem.permisoHijoListDto.forEach((childitem: any) => {
 
               if (childitem == item) {
                 childitem.isCollapsed = !childitem.isCollapsed
@@ -61,8 +60,8 @@ export class TwoColumnSidebarComponent implements OnInit {
               } else {
                 childitem.isCollapsed = true
               }
-              if (childitem.subItems) {
-                childitem.subItems.forEach((childrenitem: any) => {
+              if (childitem.permisoHijoListDto) {
+                childitem.permisoHijoListDto.forEach((childrenitem: any) => {
                   if (childrenitem == item) {
                     childrenitem.isCollapsed = false
                     childitem.isCollapsed = false
@@ -116,7 +115,7 @@ export class TwoColumnSidebarComponent implements OnInit {
 
   // Click wise Parent active class add
   toggleParentItem(event: any) {
-    let isCurrentMenuId = event.target.getAttribute('subitems');
+    let isCurrentMenuId = event.target.getAttribute('permisoHijoListDto');
     let isMenu = document.getElementById(isCurrentMenuId) as any;
     let dropDowns = Array.from(document.querySelectorAll('#navbar-nav .show'));
     dropDowns.forEach((node: any) => {
@@ -137,7 +136,7 @@ export class TwoColumnSidebarComponent implements OnInit {
   }
 
   toggleItem(event: any) { // show navbar-nav menu on click of icon sidebar menu    
-    let isCurrentMenuId = event.target.getAttribute('subitems');
+    let isCurrentMenuId = event.target.getAttribute('permisoHijoListDto');
     let isMenu = document.getElementById(isCurrentMenuId) as any;
     let dropDowns = Array.from(document.querySelectorAll('#navbar-nav .show'));
     dropDowns.forEach((node: any) => {
@@ -171,7 +170,7 @@ export class TwoColumnSidebarComponent implements OnInit {
           item.nextElementSibling.classList.remove("show");
         }
         if (item.parentElement) {
-          item.parentElement.closest(".collapse")?.classList.remove("show");
+          item.parentElement.closest(".isCollapsed")?.classList.remove("show");
         }
         item.setAttribute("aria-expanded", false);
       }
@@ -180,7 +179,7 @@ export class TwoColumnSidebarComponent implements OnInit {
   }
 
   activateIconSidebarActive(id: any) {
-    var menu = document.querySelector("#two-column-menu .simplebar-content-wrapper a[subitems='" + id + "'].nav-icon");
+    var menu = document.querySelector("#two-column-menu .simplebar-content-wrapper a[permisoHijoListDto='" + id + "'].nav-icon");
     if (menu !== null) {
       menu.classList.add("active");
     }
@@ -188,16 +187,16 @@ export class TwoColumnSidebarComponent implements OnInit {
 
   activateParentDropdown(item: any) { // navbar-nav menu add active
     item.classList.add("active");
-    let parentCollapseDiv = item.closest(".collapse.menu-dropdown");
+    let parentCollapseDiv = item.closest(".collapsed.menu-dropdown");
     if (parentCollapseDiv) {
       // to set aria expand true remaining
       parentCollapseDiv.classList.add("show");
       parentCollapseDiv.parentElement.children[0].classList.add("active");
       parentCollapseDiv.parentElement.children[0].setAttribute("aria-expanded", "true");
-      if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")) {
-        parentCollapseDiv.parentElement.closest(".collapse").classList.add("show");
-        if (parentCollapseDiv.parentElement.closest(".collapse").previousElementSibling)
-          parentCollapseDiv.parentElement.closest(".collapse").previousElementSibling.classList.add("active");
+      if (parentCollapseDiv.parentElement.closest(".collapsed.menu-dropdown")) {
+        parentCollapseDiv.parentElement.closest(".collapsed").classList.add("show");
+        if (parentCollapseDiv.parentElement.closest(".collapsed").previousElementSibling)
+          parentCollapseDiv.parentElement.closest(".collapsed").previousElementSibling.classList.add("active");
       }
       this.activateIconSidebarActive(parentCollapseDiv.getAttribute("id"));
       return false;
@@ -243,7 +242,7 @@ export class TwoColumnSidebarComponent implements OnInit {
    * @param item menuItem
    */
   hasItems(item: MenuItem) {
-    return item.subItems !== undefined ? item.subItems.length > 0 : false;
+    return item.permisoHijoListDto !== undefined ? item.permisoHijoListDto.length > 0 : false;
   }
 
   /**
@@ -253,4 +252,17 @@ export class TwoColumnSidebarComponent implements OnInit {
   SidebarHide() {
     document.body.classList.remove('vertical-sidebar-enable');
   }
+  
+  getSubMenu(menuItems:any[]):any[]{
+    const commonItems = menuItems.filter(item1 => this.menuItems.some(item2 => item1.nombreMenu === item2.nombreMenu));
+    const uniqueMenuItemsMap = commonItems.reduce((map, item) => {
+      if (!map.has(item.nombreMenu)) {
+        map.set(item.nombreMenu, item);
+      }
+      return map;
+    }, new Map<string, any>());
+  
+    return Array.from(uniqueMenuItemsMap.values());
+  }
+  
 }

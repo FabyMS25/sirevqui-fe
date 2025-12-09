@@ -24,45 +24,45 @@
       <i class="ri-record-circle-line"></i>
     </button>
   </div>
-
-  <div class="dropdown sidebar-user m-1 rounded">
-    <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="d-flex align-items-center gap-2">
-          <img class="rounded-circle header-profile-user" [src]="'assets/images/users/'+avatar" alt="Header Avatar">
-           <span class="text-start">
-              <span class="d-none d-lg-inline-block text-primary sidebar-user-name-text">{{userData.username}}</span>
-              <span class="d-none d-lg-block fs-14 sidebar-user-name-sub-text">
-                <i class="ri ri-checkbox-blank-circle-fill fs-10 text-primary align-self-center"></i> 
-                <span class="align-middle text-muted m-2">Online</span>
-              </span>
+  <div class="navbar-brand-box">
+    <div class="dropdown sidebar-user">
+          <span class="d-flex align-items-center gap-2">
+            <img class="rounded-circle header-profile-user" [src]="'assets/icons/users/'+avatar" alt="Header Avatar">
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover " id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="text-start">
+                <span class="d-none d-lg-inline-block text-primary sidebar-user-name-text fs-12">{{userData.username}}</span>
+                <span class="d-none d-lg-block fs-14 sidebar-user-name-sub-text">
+                  <i class="ri ri-checkbox-blank-circle-fill fs-10 text-primary align-self-center"></i> 
+                  <span class="align-middle text-muted m-2">Online</span>
+                </span>
+            </span>
+          </button>
           </span>
-        </span>
-    </button>
-    <div class="dropdown-menu dropdown-menu-end">
-        <!-- item-->
-        <h6 class="dropdown-header">Bienvenido {{userData.username}}!</h6>
-        <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
-        <a class="dropdown-item" href="apps-chat.html"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Messages</span></a>
-        <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Taskboard</span></a>
-        <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Balance : <b>$5971.67</b></span></a>
-        <a class="dropdown-item" href="pages-profile-settings.html"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
-        <a class="dropdown-item" href="auth-lockscreen-basic.html"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a>
-        <a class="dropdown-item" href="auth-logout-basic.html"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+      <div class="dropdown-menu dropdown-menu-end">
+          <h6 class="dropdown-header">Bienvenido {{userData.username}}!</h6>
+          <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
+          <a class="dropdown-item" href="apps-chat.html"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Messages</span></a>
+          <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Taskboard</span></a>
+          <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Balance : <b>$5971.67</b></span></a>
+          <a class="dropdown-item" href="pages-profile-settings.html"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
+          <a class="dropdown-item" href="auth-lockscreen-basic.html"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a>
+          <a class="dropdown-item" href="auth-logout-basic.html"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+      </div>
     </div>
-</div>
-
+  </div>
   <div id="scrollbar">
     <div class="container-fluid">
-
       <div id="two-column-menu">
       </div>
-      <ngx-simplebar class="sidebar-menu-scroll" style="max-height: calc(100vh - 70px)">
+      <ngx-simplebar class="sidebar-menu-scroll" style="max-height: calc(100vh - 150px)">
         <ul class="metismenu list-unstyled navbar-nav" id="navbar-nav">
-          @for(item of menuItems; track $index){
+          @for(item of getSubMenu(menuItems); track $index){
           @if(item.isTitle){
-          <li class="menu-title"><span data-key="t-menu">{{ item.nombreMenu | translate }}</span></li>
+          <li class="menu-title"><span data-key="t-menu">
+            {{ item.nombreMenu| translate }}
+          </span></li>
           }@else {
           <li class="nav-item">
             @if(!item.permisoPadreDto){
@@ -83,7 +83,7 @@
                   @if(hasItems(subitem)){
                   <a class="nav-link" href="javascript:void(0);" 
                     [attr.data-parent]="subitem.permisoPadreDto" data-bs-toggle="collapse" 
-                    [attr.aria-expanded]="!subitem.isCollapsed" (click)="toggleItem(subitem)">
+                    [attr.aria-expanded]="subitem.isCollapsed" (click)="toggleItem(subitem)">
                     {{ subitem.nombreMenu | translate}}
                     @if(subitem.badge){<span class="badge badge-pill {{subitem.badge.variant}}">
                       {{subitem.badge.text | translate}}</span>}
@@ -107,10 +107,10 @@
                             @for(subSubitem1 of getSubMenu(subSubitem.permisoHijoListDto); track $index){
                             <li class="nav-item">
                               <a [attr.data-parent]="subSubitem1.permisoPadreDto" 
-                              [routerLink]="subSubitem1.ruta" class="nav-link" (click)="updateActive($event)">
+                                [routerLink]="subSubitem1.ruta" class="nav-link" 
+                                (click)="updateActive($event)">
                                 {{ subSubitem1.nombreMenu | translate }}
                               </a>
-
                             </li>
                             }
                           </ul>
@@ -130,6 +130,7 @@
                   }@else {
                   <a [routerLink]="subitem.ruta" class="nav-link" 
                     [attr.data-parent]="subitem.permisoPadreDto" (click)="updateActive($event)">
+                    <i class="{{ subitem.icono }} icon nav-icon" class=""></i>
                     {{ subitem.nombreMenu | translate}}
                     @if(subitem.badge){<span class="badge badge-pill {{subitem.badge.variant}}">
                       {{subitem.badge.text | translate}}</span>}
@@ -154,11 +155,7 @@
         </ul>
       </ngx-simplebar>
     </div>
-    <!-- Sidebar -->
   </div>
   <div class="sidebar-background"></div>
 </div>
-<!-- Left Sidebar End -->
-
-<!-- Vertical Overlay-->
 <div class="vertical-overlay" (click)="SidebarHide()"></div>

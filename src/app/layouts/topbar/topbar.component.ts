@@ -1,22 +1,18 @@
 import { Component, OnInit, EventEmitter, Output, Inject, ViewChild, TemplateRef } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { EventService } from '../../core/services/event.service';
-
-//Logout
-import { environment } from '../../../environments/environment';
-import { AuthenticationService } from '../../core/services/auth.service';
-import { AuthfakeauthenticationService } from '../../core/services/authfake.service';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
+import { CookieService } from 'ngx-cookie-service';
+
+import { AuthenticationService } from '../../core/services/auth.service';
 import { TokenStorageService } from '../../core/services/token-storage.service';
 
-// Language
-import { CookieService } from 'ngx-cookie-service';
+import { EventService } from '../../core/services/event.service';
 import { LanguageService } from '../../core/services/language.service';
-import { TranslateService } from '@ngx-translate/core';
-import { allNotification, messages } from './data'
+
 import { CartModel } from './topbar.model';
 import { cartData } from './data';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-topbar',
@@ -24,11 +20,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./topbar.component.scss']
 })
 export class TopbarComponent implements OnInit {
-  messages: any
+  menuItems:any[]=[];
   element: any;
   mode: string | undefined;
   @Output() mobileMenuButtonClicked = new EventEmitter();
-  allnotifications: any
   flagvalue: any;
   valueset: any;
   countryName: any;
@@ -37,23 +32,21 @@ export class TopbarComponent implements OnInit {
   cartData!: CartModel[];
   total = 0;
   cart_length: any = 0;
-  totalNotify: number = 0;
-  newNotify: number = 0;
-  readNotify: number = 0;
   isDropdownOpen = false;
   @ViewChild('removenotification') removenotification !: TemplateRef<any>;
-  notifyId: any;
   avatar="default-profile1.png";
 
   constructor(@Inject(DOCUMENT) private document: any, private eventService: EventService, public languageService: LanguageService, private modalService: NgbModal,
-    public _cookiesService: CookieService, public translate: TranslateService, private authService: AuthenticationService, private authFackservice: AuthfakeauthenticationService,
+    public _cookiesService: CookieService, public translate: TranslateService, private authService: AuthenticationService, 
     private router: Router, private TokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     this.userData = this.authService.currentUser();
+    this.avatar=this.authService.getAvatar();
+    const menu = localStorage.getItem('menu');
+    this.menuItems =menu ? JSON.parse(menu) : null;
     this.element = document.documentElement;
 
-    this.avatar=this.authService.getAvatar();
 
     // Cookies wise Language set
     this.cookieValue = this._cookiesService.get('lang');
@@ -65,10 +58,7 @@ export class TopbarComponent implements OnInit {
       this.flagvalue = val.map(element => element.flag);
     }
 
-    // Fetch Data
-    this.allnotifications = allNotification;
 
-    this.messages = messages;
     this.cartData = cartData;
     this.cart_length = this.cartData.length;
     this.cartData.forEach((item) => {
@@ -121,14 +111,7 @@ export class TopbarComponent implements OnInit {
       }
     }
   }
-  /**
-* Open modal
-* @param content modal content
-*/
-  openModal(content: any) {
-    // this.submitted = false;
-    this.modalService.open(content, { centered: true });
-  }
+
 
   /**
   * Topbar Light-Dark Mode Change
@@ -155,13 +138,7 @@ export class TopbarComponent implements OnInit {
    */
   listLang = [
     { text: 'English', flag: 'assets/images/flags/us.svg', lang: 'en' },
-    { text: 'Española', flag: 'assets/images/flags/spain.svg', lang: 'es' },
-    { text: 'Deutsche', flag: 'assets/images/flags/germany.svg', lang: 'de' },
-    { text: 'Italiana', flag: 'assets/images/flags/italy.svg', lang: 'it' },
-    { text: 'русский', flag: 'assets/images/flags/russia.svg', lang: 'ru' },
-    { text: '中国人', flag: 'assets/images/flags/china.svg', lang: 'ch' },
-    { text: 'français', flag: 'assets/images/flags/french.svg', lang: 'fr' },
-    { text: 'Arabic', flag: 'assets/images/flags/ar.svg', lang: 'ar' },
+    { text: 'Español', flag: 'assets/images/flags/spain.svg', lang: 'es' },
   ];
 
   /***
@@ -258,65 +235,6 @@ export class TopbarComponent implements OnInit {
     dropdown.classList.remove("show");
     searchOptions.classList.add("d-none");
     searchInputReponsive.value = "";
-  }
-
-  // Remove Notification
-  checkedValGet: any[] = [];
-  onCheckboxChange(event: any, id: any) {
-    this.notifyId = id
-    var result;
-    if (id == '1') {
-      var checkedVal: any[] = [];
-      for (var i = 0; i < this.allnotifications.length; i++) {
-        if (this.allnotifications[i].state == true) {
-          result = this.allnotifications[i].id;
-          checkedVal.push(result);
-        }
-      }
-      this.checkedValGet = checkedVal;
-    } else {
-      var checkedVal: any[] = [];
-      for (var i = 0; i < this.messages.length; i++) {
-        if (this.messages[i].state == true) {
-          result = this.messages[i].id;
-          checkedVal.push(result);
-        }
-      }
-      this.checkedValGet = checkedVal;
-    }
-    checkedVal.length > 0 ? (document.getElementById("notification-actions") as HTMLElement).style.display = 'block' : (document.getElementById("notification-actions") as HTMLElement).style.display = 'none';
-  }
-
-  notificationDelete() {
-    if (this.notifyId == '1') {
-      for (var i = 0; i < this.checkedValGet.length; i++) {
-        for (var j = 0; j < this.allnotifications.length; j++) {
-          if (this.allnotifications[j].id == this.checkedValGet[i]) {
-            this.allnotifications.splice(j, 1)
-          }
-        }
-      }
-    } else {
-      for (var i = 0; i < this.checkedValGet.length; i++) {
-        for (var j = 0; j < this.messages.length; j++) {
-          if (this.messages[j].id == this.checkedValGet[i]) {
-            this.messages.splice(j, 1)
-          }
-        }
-      }
-    }
-    this.calculatenotification()
-    this.modalService.dismissAll();
-  }
-
-  calculatenotification() {
-    this.totalNotify = 0;
-    this.checkedValGet = []
-
-    this.checkedValGet.length > 0 ? (document.getElementById("notification-actions") as HTMLElement).style.display = 'block' : (document.getElementById("notification-actions") as HTMLElement).style.display = 'none';
-    if (this.totalNotify == 0) {
-      document.querySelector('.empty-notification-elem')?.classList.remove('d-none')
-    }
   }
 
   

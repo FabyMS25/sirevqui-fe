@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { EventService } from '../core/services/event.service';
-
-// Store
 import { RootReducerState } from '../store';
 import { Store } from '@ngrx/store';
 
@@ -25,7 +22,7 @@ export class LayoutComponent implements OnInit {
     this.store.select('layout').subscribe((data) => {
       this.layoutType = data.LAYOUT;
       document.documentElement.setAttribute('data-layout', data.LAYOUT);
-      document.documentElement.setAttribute('data-theme', data.LAYOUT_THEME);
+      document.documentElement.setAttribute('data-theme', data.LAYOUT_MODE);
       document.documentElement.setAttribute('data-theme-colors', data.LAYOUT_THEME_COLOR);
       document.documentElement.setAttribute('data-bs-theme', data.LAYOUT_MODE);
       document.documentElement.setAttribute('data-layout-width', data.LAYOUT_WIDTH);

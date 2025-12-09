@@ -1,0 +1,84 @@
+
+<!-- Password Modal -->
+<!-- <ng-template #showModel let-modal> -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="btn-close" id="btn-close"
+                data-bs-dismiss="modal" aria-label="Close"
+                (click)="onCloseModal()">
+            </button>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" (click)="modal.dismiss('Cross click')"></button> -->
+        </div>
+        <div class="modal-body">
+            <div class="text-center">
+                <!-- <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon> -->
+                <div class="m-4 p-2 fs-15 mx-4 mx-sm-5">
+                    <h4>Cambio de Contraseña </h4>
+                    <p class="text-muted mx-4 mb-0"></p>
+                </div>
+                <form (ngSubmit)="changePassword()" [formGroup]="passwordForm">
+                    <div class="form-group row m-2">
+                        <label class="col-lg-5">Contraseña Actual: </label>
+                        <div class="col-lg-7">
+                            <input [type]="oldPasswordField ? 'text' : 'password'" class="form-control pe-5 password-input" 
+                                placeholder="Confirmar contraseña"  id="confirm-password-input" required formControlName="currentPassword"
+                                [ngClass]="{ 'is-invalid': submitted && f['currentPassword'].errors }">
+                            <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="confirm-password-input"><i class="ri-eye-fill align-middle" [ngClass]="{'mdi-eye-off-outline': !passwordField, 'mdi-eye-outline': passwordField
+                            }" (click)="toggleOldpasswordField()"></i></button>
+                            @if(submitted && f['currentPassword'].errors){
+                                <div class="invalid-feedback">
+                                    <span *ngIf="f['currentPassword'].errors['required']">Escriba su actual su contraseña</span>
+                                    <span *ngIf="f['currentPassword'].errors['invalidPassword']">La contraseña es incorrecta</span>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                
+                    <div class="form-group row m-2">
+                        <label class="col-lg-5">Nueva Contraseña: </label>
+                        <div class="col-lg-7">
+                            <input [type]="passwordField ? 'text' : 'password'" class="form-control pe-5 password-input" 
+                                placeholder="Ingresar contraseña" id="password-input" 
+                                aria-describedby="passwordInput" required formControlName="password"
+                                [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+                            <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button"
+                                id="password-addon"><i class="ri-eye-fill align-middle" [ngClass]="{'mdi-eye-off-outline': !passwordField, 'mdi-eye-outline': passwordField
+                            }" (click)="togglepasswordField()"></i></button>
+                            @if(submitted && f['password'].errors){
+                            <div class="invalid-feedback">
+                                @if(f['password'].errors['required']){
+                                    <span>Escriba su contraseña</span>
+                                }
+                            </div>
+                            }
+                            
+                        </div>
+                    </div>
+                    <div class="form-group row m-2">
+                        <label class="col-lg-5">Confirmar Contraseña: </label>
+                        <div class="col-lg-7">
+                            <input [type]="confirmField ? 'text' : 'password'" class="form-control pe-5 password-input" 
+                                placeholder="Confirmar contraseña"  id="confirm-password-input" required formControlName="cpassword"
+                                [ngClass]="{ 'is-invalid': submitted && f['cpassword'].errors }">
+                            <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="confirm-password-input"><i class="ri-eye-fill align-middle" [ngClass]="{'mdi-eye-off-outline': !passwordField, 'mdi-eye-outline': passwordField
+                            }" (click)="toggleconfirmField()"></i></button>
+                            @if(submitted && f['cpassword'].errors){
+                                <div class="invalid-feedback">
+                                    <span *ngIf="f['cpassword'].errors['required']">Confirme su contraseña</span>
+                                    <span *ngIf="f['cpassword'].errors['mustMatch']">Las contraseñas no coinciden</span>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                        <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" 
+                        (click)="onCloseModal()"><i class="ri-close-line me-1 align-middle"></i> Cancelar</button>
+                        <button type="submit" class="btn w-sm btn-danger " id="delete-product" 
+                        >Cambiar Contraseña</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<!-- </ng-template> -->
+

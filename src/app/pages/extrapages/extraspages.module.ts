@@ -1,7 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbNavModule, NgbDropdownModule, NgbAccordionModule, NgbTooltipModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNavModule, NgbDropdownModule, NgbAccordionModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Swiper Slider
 import { SlickCarouselModule } from 'ngx-slick-carousel';
@@ -10,27 +10,25 @@ import { NgSelectModule } from '@ng-select/ng-select';
 // Flatpicker
 import { FlatpickrModule } from 'angularx-flatpickr';
 
-// Feather Icon
-import { FeatherModule } from 'angular-feather';
-import { allIcons } from 'angular-feather/icons';
+// Load Icon
+import { defineElement } from '@lordicon/element';
+import lottie from 'lottie-web';
 
 // Ng Search 
 import { NgPipesModule } from 'ngx-pipes';
 
-// Load Icon
-import { defineElement } from "@lordicon/element";
-import lottie from 'lottie-web';
-
 // Component pages
 import { ExtraPagesRoutingModule } from './extrapages-routing.module';
 import { SharedModule } from '../../shared/shared.module';
-import { FaqsComponent } from './faqs/faqs.component';
-import { PricingComponent } from './pricing/pricing.component';
+import { SitemapComponent } from './sitemap/sitemap.component';
+import { SearchResultsComponent } from './search-results/search-results.component';
+import { ExtraPagesComponent } from './extra-pages-in/extra-pages-layout.component';
 
 @NgModule({
   declarations: [
-    FaqsComponent,
-    PricingComponent,
+    ExtraPagesComponent,
+    SitemapComponent,
+    SearchResultsComponent,
   ],
   imports: [
     CommonModule,
@@ -40,13 +38,11 @@ import { PricingComponent } from './pricing/pricing.component';
     NgbDropdownModule,
     NgbAccordionModule,
     NgbTooltipModule,
-    NgbPaginationModule,
     SlickCarouselModule,
     NgSelectModule,
     FlatpickrModule,
     ExtraPagesRoutingModule,
     SharedModule,
-    FeatherModule.pick(allIcons),
     NgPipesModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

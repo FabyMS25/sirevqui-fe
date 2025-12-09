@@ -1,0 +1,134 @@
+
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs [title]="title" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- Breadcrumbs and Shape -->
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card">
+            <div class="bg-warning-subtle position-relative">
+                <div class="card-body p-5">
+                    <div class="text-center">
+                        <h3>{{title}}</h3>
+                        <p class="mb-0 text-muted">Ultima Actualización: 15 de Julio, 2024</p>
+                    </div>
+                </div>
+                <div class="shape">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        xmlns:svgjs="http://svgjs.com/svgjs" width="1440" height="70" preserveAspectRatio="none"
+                        viewBox="0 0 1440 55">
+                        <g mask="url(&quot;#SvgjsMask1001&quot;)" fill="none">
+                            <path d="M 0,4 C 144,13 432,48 720,49 C 1008,50 1296,17 1440,9L1440 60L0 60z"
+                                style="fill: var(--vz-secondary-bg);"></path>
+                        </g>
+                        <defs>
+                            <mask id="SvgjsMask1001">
+                                <rect width="1440" height="60" fill="#ffffff"></rect>
+                            </mask>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+            
+            <app-terms-conditions *ngIf="pageType=== 'termsConditions'"></app-terms-conditions>
+            <app-privacy-policy *ngIf="pageType === 'PrivacyPolicy'"></app-privacy-policy>
+        </div>
+    </div>
+</div>
+
+  
+        <!-- <div class="card-body p-4">                
+            <div class="mb-4 pb-2">
+                <h5 class="card-title text-decoration-underline mb-3">
+                    Terminos & Condiciones de Uso
+                </h5>
+                <p class="mb-0 text-muted">Ultima Actualización: 15 de Julio, 2024</p>
+            </div>                
+            <div class="mb-4 pb-2">
+                <div>
+                    <h5> Aceptación de Términos y Condiciones</h5>
+                    <p class="text-muted">
+                        El acceso y la utilización de las aplicaciones así como sus actualizaciones
+                        como futuras aplicaciones, en adelante “las aplicaciones” así como los sitios web donde se hospeden
+                        los Términos y Condiciones, son propiedad y responsabilidad del Gobierno Autono municipal de Quillacollo en
+                        adelante “Nosotros” o “GAMQ”. Con domicilio Plaza 06 de Agosto Acera Este. Los medios de contacto son: (591) + 4 + 4362771-72-73 
+                        y el correo electrónico: adminquillacollo.gob.bo .</p>
+                    <p class="text-muted">
+                        Los Términos y Condiciones de las aplicaciones, en adelante “Términos y Condiciones” o
+                        “Documento” o “Contrato” regulan el uso, manejo, control de las aplicaciones que utilizan 
+                        el sitio web o las páginas o sitios hospedados ubicados o ligados al o en el
+                        mismo que ofrecen servicios y proveen información sobre los distintas propiedades del GAMQ.</p>
+                    <p class="text-muted">
+                        Los Usuarios aceptan completamente y expresamente cada una de las cláusulas que conforman los
+                        Términos y Condiciones desde el momento que utilizan la aplicación. Nos reservamos el derecho de
+                        cambiar, modificar y/o actualizar en cualquier momento las condiciones y términos establecidos en
+                        el presente documento. Podrá consultar la versión actualizada en el sitio sección Términos
+                        y condiciones de uso de las aplicaciones. Asimismo, podrá encontrar en la parte superior la
+                        fecha de actualización del contrato para revisar cuando fueron modificadas. Por tanto, le pedimos
+                        a Usted “Usuario” revisar periódicamente y leer cuidadosamente los Términos y Condiciones.
+                        En caso de no estar de acuerdo con alguna cláusula o todos los términos y condiciones le rogamos
+                        que por favor no utilice la aplicación
+                    </p>
+                </div>
+                <div>
+                    <h5>Confidencialidad.</h5>
+                    <p class="text-muted">
+                        GAMQ se compromete a resguardar su información cumpliendo con lo establecido en las leyes
+                        bolivianas en protección de datos personales.</p>
+                </div>
+                <div>
+                    <h5>Servicios</h5>
+                    <p class="text-muted">Le recordamos que todo producto servicio ofertado en nuestras aplicaciones está sujeto a
+                        disponibilidad de cada encargado. 
+                        GAMQ no es responsable de los daños y/o perjuicios que pudiera sufrir el Usuario como
+                        consecuencia de la toma de decisiones con base en la información presentada en las aplicaciones,
+                        la cual es de naturaleza general e informativa, por lo que el Usuario debe tomarla en cuenta
+                        únicamente como referencia para la adopción de decisiones personales.
+                        Nos reservamos el derecho a modificar la oferta de productos y/o servicios en cualquier momento
+                        y sin previo aviso. Toda descripción de productos y/o servicios es con un fin informativo. No
+                        garantizamos que la descripción del producto y/o servicio sea precisa, correcta, vigente y/o
+                        actualizada.
+                    </p>
+                </div>
+    
+                <div>
+                    <h5>Licencia</h5>
+                    <p class="text-muted">Todos los derechos de propiedad son reservados.
+                        Usted puede ingresar a el sitio web para us uso personal sujeto a las restricciones
+                        en enstos terminos y condiciones.</p>
+                    <p class="text-muted">Usted No debe:</p>
+                    <ul class="text-muted vstack gap-2 ul-padd">
+                        <li>
+                            Republicar material de DEPORTES - GAMQ
+                        </li>
+                        <li>
+                            Vender, alquilar o sublicenciar material de DEPORTES - GAMQ
+                        </li>
+                        <li>
+                            Reproducir, duplicar o copiar material de DEPORTES - GAMQ
+                        </li>
+                        <li>
+                            Redistribuir contenido de DEPORTES - GAMQ
+                        </li>
+                    </ul>
+                </div>
+    
+                <div>
+                    <h5>Jurisdicción y competencia</h5>
+                    <p class="text-muted">                        
+                        El Usuario acepta que la legislación y leyes aplicables serán las Bolivianas y para cualquier disputa,
+                        juicio, controversia de cualquier índole o materia deberán someterse a los Juzgados y Tribunales de
+                        Bolivia.
+                        Previo a cualquier inicio de juicio o controversia ambas Partes se comprometen a resolver de
+                        manera amistosa mediante una conciliación.
+                    </p>
+                </div>
+            </div>
+    
+            <div class="text-end d-flex gap-1 justify-content-end">
+                <button (click)="goBack()" class="btn btn-success">Aceptar</button>
+                <button (click)="goBack()" class="btn btn-outline-danger">
+                  <i class="ri-close-line align-bottom me-1"></i> Volver
+                </button>
+            </div>                  
+        </div> -->
+  

@@ -6,9 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./horizontal.component.scss']
 })
 
-/**
- * Horizontal Component
- */
 export class HorizontalComponent implements OnInit {
 
   constructor() { }
@@ -18,9 +15,6 @@ export class HorizontalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  /**
-   * on settings button clicked from topbar
-   */
    onSettingsButtonClicked() {
     document.body.classList.toggle('right-bar-enabled');
     const rightBar = document.getElementById('theme-settings-offcanvas');
@@ -30,9 +24,6 @@ export class HorizontalComponent implements OnInit {
     }
   }
 
-  /**
-   * On mobile toggle button clicked
-   */
    onToggleMobileMenu() {     
    if (document.documentElement.clientWidth <= 1024) {
      document.body.classList.toggle('menu');

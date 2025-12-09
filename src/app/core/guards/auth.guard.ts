@@ -1,39 +1,68 @@
-import { Injectable } from '@angular/core';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Injectable } from "@angular/core";
+import {
+  CanActivate,
+  CanActivateChild,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  Router
+} from "@angular/router";
 
-// Auth Services
-import { AuthenticationService } from '../services/auth.service';
-import { AuthfakeauthenticationService } from '../services/authfake.service';
-import { environment } from '../../../environments/environment';
+import { AuthenticationService } from "../services/auth.service";
 
-@Injectable({ providedIn: 'root' })
-export class AuthGuard  {
-    constructor(
-        private router: Router,
-        private authenticationService: AuthenticationService,
-        private authFackservice: AuthfakeauthenticationService
-    ) { }
+@Injectable({ providedIn: "root" })
+export class AuthGuard implements CanActivate, CanActivateChild {
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService
+  ) {}
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (environment.defaultauth === 'firebase') {
-            const currentUser = this.authenticationService.currentUser();
-            if (currentUser) {
-                // logged in so return true
-                return true;
-            }
-        } else {
-            const currentUser = this.authFackservice.currentUserValue;
-            if (currentUser) {
-                // logged in so return true
-                return true;
-            }
-            // check if user data is in storage is logged in via API.
-            if(sessionStorage.getItem('currentUser')) {
-                return true;
-            }
-        }
-        // not logged in so redirect to login page with the return url
-        this.router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
-        return false;
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
+    const currentUser = this.authenticationService.currentUser();
+    if (!currentUser) {
+      this.authenticationService.logout();
+      return false;
     }
+    const hasPermission = this.checkPermissions(route, state);
+    if (!hasPermission) {
+      this.router.navigate(['/']);
+    }
+    return hasPermission;
+  }
+
+  canActivateChild(
+    childRoute: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
+    return this.canActivate(childRoute, state);
+  }
+
+  private checkPermissions(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
+    if (state.url === "/" || state.url === "") {
+      return true;
+    }
+
+    let currentRoute: ActivatedRouteSnapshot | null = route;
+    while (currentRoute.firstChild) {
+      currentRoute = currentRoute.firstChild;
+    }
+
+    const requiredPermission =
+      currentRoute.data["requiredPermission"] || currentRoute.data["permission"];
+
+    if (requiredPermission) {
+      return (
+        requiredPermission === "CAN_ACCESS" ||
+        this.authenticationService.hasRoutePermission(requiredPermission)
+      );
+    }
+
+    const baseUrl = state.url.split("?")[0].split("/").slice(0, 3).join("/");
+    return this.authenticationService.hasRoutePermission(baseUrl);
+  }
 }

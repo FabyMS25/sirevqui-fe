@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiLoginUrl: 'http://181.177.143.185:8080/api',
-  // backendUrl:'http://181.177.143.187:8083/api',
+  backendUrl:'http://localhost:8083/api',
 
   defaultauth: 'fackbackend',
   firebaseConfig: {

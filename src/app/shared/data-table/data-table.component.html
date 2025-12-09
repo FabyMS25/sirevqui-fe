@@ -1,0 +1,238 @@
+<div class="responsive-table">
+    <!-- Desktop view -->
+    <div class="table-responsive table-card mb-2 table-nowrap" 
+         [style.max-height]="!paginationEnabled ? maxHeight : 'none'"
+         [style.overflow-y]="!paginationEnabled ? 'auto' : 'visible'"
+         *ngIf="viewMode === 'table'">
+        <table class="table">
+            <thead class="table-light" [class.sticky-header]="!paginationEnabled">
+                <tr>
+                    @if (multiCheck) {
+                        <th scope="col" style="width: 50px;">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="checkAll" value="checkAll"
+                                [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">  
+                            </div>
+                        </th>
+                    }
+                    @for (column of itemsList; track $index) {
+                      @if (column.visible) {
+                        <th class="sort" (click)="onSort(column.prop)" 
+                            [attr.aria-sort]="getSortDirection(column.prop)"
+                            [class.sorted-asc]="currentSortColumn === column.prop && isSortAscending"
+                            [class.sorted-desc]="currentSortColumn === column.prop && !isSortAscending">
+                            {{column.name}}
+                            <span class="sort-indicator" aria-hidden="true">
+                                <i class="ri-arrow-up-line" *ngIf="currentSortColumn === column.prop && isSortAscending"></i>
+                                <i class="ri-arrow-down-line" *ngIf="currentSortColumn === column.prop && !isSortAscending"></i>
+                            </span>
+                        </th>
+                      }
+                    }
+                    @if (actions) {
+                        <th >Acciones</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (data of content; track $index) {
+                <tr [id]="data.uuid || $index">
+                    @if (multiCheck) {
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                [checked]="checkedValGet.includes(data)" 
+                                (change)="onCheckboxChange($event, data)">
+                            </div>
+                        </td>
+                    }
+                    @for (column of itemsList; track column.prop) {   
+                      @if (column.visible) {
+                      <td>
+                        <ng-container *ngIf="getPropertyValue(data, column.prop) as value; else emptyValue">
+                            @if (column.tag) {
+                                <span class="badge" [ngClass]="['bg-'+getBadgeStatus(value)+'-subtle','text-'+getBadgeStatus(value)]">
+                                    {{ value }}
+                                </span>
+                            } @else if (column.date) {
+                                <ngb-highlight [result]="(value | date:'longDate') || value" [term]="searchTerm"></ngb-highlight>
+                            } @else if(column.cost){
+                                        <span class="fw-bold">Bs. {{ value | number: '1.2-2' }}</span>                                        
+                            }@else if(column.html){  
+                                <span [innerHTML]="value"></span>
+                            } @else if (column.image) {
+                                <img [src]="value" class="avatar-sm image_src" [alt]="''">
+                            } @else {
+                                @if (column.avatar && data.avatar) {
+                                    <img [src]="'assets/icons/users/'+data.avatar" alt="" class="avatar-xs rounded-circle">
+                                }
+                                <a (click)="showItem(data)">{{value}}</a>
+                            }
+                        </ng-container>
+                        <ng-template #emptyValue>
+                            @if (column.image) {                                    
+                                <i class="ri-car-fill vehicle-icon"></i>
+                            }@else{
+                                <span class="text-muted">...</span>
+                            }
+                        </ng-template>
+                      </td>
+                      }
+                    }
+                    
+                    @if (actions) {
+                    <td>
+                        <ul class="list-inline d-flex hstack gap-2 mb-0">
+                            @for (action of showActions(data); track $index) {
+                            <li class="me-2" [ngbTooltip]="action.tooltip" placement="top">
+                              @if (action.text) {                                
+                                <button type="button" [class]="action.buttonClass"
+                                    (click)="action.handler(data)">                                   
+                                    <span class="action-text">{{action.text}}</span>
+                                    <i [class]="action.icon + ' align-bottom'"></i> 
+                                </button>
+                              }@else {
+                                <a [class]="action.buttonClass" (click)="action.handler(data)">
+                                <i [class]="action.icon + ' align-bottom'"></i>
+                                </a>
+                              }
+                            </li>
+                            }
+                        </ul>
+                    </td>
+                    }
+                    </tr>
+                    @if (expandedItemId === data.idOrden || expandedItemId === data.uuid) {
+                        <tr class="detail-row">
+                            <td [colSpan]="getColumnCount()" class="p-0">
+                                <div class="p-3 bg-light border-top-0 border">
+                                    <ng-content select="[detail]"></ng-content>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }           
+            </tbody>            
+        </table>
+    </div>
+
+    <!-- Vista de tarjetas -->
+    <div class="cards-view" *ngIf="viewMode === 'cards'">
+        @for (data of content; track $index) {
+        <div class="card mb-3" [id]="data.uuid || $index">
+            <div class="card-body">
+                @if (multiCheck) {
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox"
+                            [checked]="checkedValGet.includes(data)" 
+                            (change)="onCheckboxChange($event, data)">
+                    </div>
+                }
+
+                <div class="mobile-data-grid">
+                    @for (column of itemsList; track $index) {
+                      @if (column.visible && (column.primary || isMobileColumn(column))) {
+                        <div class="mobile-data-row">
+                            <span class="mobile-data-label">{{column.name}}:</span>
+                            <span class="mobile-data-value" [ngClass]="{'status': column.tag}">
+                                <ng-container *ngIf="getPropertyValue(data, column.prop) as value; else emptyValue">
+                                    @if (column.tag) {
+                                        <span class="badge" 
+                                            [ngClass]="['bg-' + getBadgeStatus(value) + '-subtle', 'text-' + getBadgeStatus(value)]">
+                                            {{ value }}
+                                        </span>
+                                    } @else if (column.date) {
+                                        {{ value | date:'shortDate' }}
+                                    } @else if(column.html) {  
+                                        <span [innerHTML]="value"></span>
+                                    } @else {
+                                        {{ value || '-' }}
+                                    }
+                                </ng-container>
+                                <ng-template #emptyValue>
+                                    <span class="text-muted">-</span>
+                                </ng-template>
+                            </span>
+                        </div>
+                      }
+                    }
+                </div>
+                @if (actions) {
+                <div class="mobile-actions mt-2">
+                    <div class="d-flex justify-content-end gap-2">
+                        <ul class="list-inline d-flex hstack gap-2 mb-0">
+                            @for (action of showActions(data); track $index) {
+                              <li class="me-2" [ngbTooltip]="action.tooltip" placement="top">
+                                <a [class]="action.buttonClass" (click)="action.handler(data)">
+                                  <i [class]="action.icon + ' align-bottom'"></i>
+                                  @if (action.text) {
+                                    <span class="action-text">{{action.text}}</span>
+                                  }
+                                </a>
+                              </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+        }
+    </div>
+    
+    <!-- Loading Spinner -->
+    <div id="elmLoader" *ngIf="loading">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+        <span class="visually-hidden">Cargando...</span>
+    </div>
+    </div>  
+    
+    <!-- No Results Found -->
+    <div class="noresult" *ngIf="!loading && (!allcontent || (allcontent.length === 0))">
+    <div class="text-center">
+        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" 
+        colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px">
+        </lord-icon>
+        <h5 class="mt-2">Lo Sentimos! No Se encontró ningún Dato </h5>
+        <p class="text-muted">No encontramos datos para mostrar</p>
+    </div>
+    </div>
+    
+    <!-- Pagination (Only shown when enabled) -->
+    <div class="row align-items-md-center mt-3" *ngIf="shouldShowPagination()">
+        <div class="col col-xxl-1" *ngIf="getTotalElements() > 0">                        
+            <div class="text-sm-left float-start listjs-pagination">     
+                <div class="d-flex">
+                    <select class="form-control mb-0" (change)="onTableSizeChange($event)">
+                        <option *ngFor="let size of tableSizes" [value]="size" [selected]="size === itemsPerPage">                
+                            {{size}}
+                        </option>                
+                    </select>             
+                </div>      
+            </div>
+        </div>
+        <div class="col col-xxl-5 d-none d-sm-table" *ngIf="getTotalElements() > 0">
+            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                <span style="color:slategray">
+                    {{getDisplayedItemsCount()}} Registros, de un total de {{ getTotalElements() }}
+                    <span *ngIf="serverSidePagination">(Paginación del servidor)</span>
+                    <span *ngIf="!paginationEnabled">(Todos los registros)</span>
+                </span>
+            </div>            
+        </div> 
+        <div class="col col-xxl-6">
+            <div class="text-sm-right float-sm-end listjs-pagination">
+                <ngb-pagination 
+                    [collectionSize]="getTotalElements()" 
+                    [(page)]="service.page" 
+                    [pageSize]="itemsPerPage" 
+                    [boundaryLinks]="true" 
+                    [maxSize]="2" 
+                    [ellipses]="true"
+                    (pageChange)="onPageChange($event)">
+                </ngb-pagination>
+            </div>
+        </div>
+    </div> 
+    <!-- End Pagination -->    
+</div>

@@ -1,0 +1,21 @@
+.custom-input {
+    display: none;
+}
+
+.custom-label {
+    display: inline-block;
+    color: #198754;
+    text-align: center;
+    background: transparent;
+    padding: 0.375rem 0.75rem;
+    // user-select: none;
+    cursor: pointer;
+    border-radius: 0.375rem;
+    border: 1px solid #198754;
+    font-size: 1rem;
+    font-weight: 400;
+}
+.custom-label:hover{
+    color: #fff;
+    background: #198754;
+}

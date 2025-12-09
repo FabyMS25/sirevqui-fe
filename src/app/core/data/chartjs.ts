@@ -1,4 +1,4 @@
-import { ChartType } from "src/app/pages/charts/chartjs/chartjs.model";
+import { ChartType } from "src/app/pages/_examples/charts/chartjs/chartjs.model";
 
 /**
  * Line Area Chart

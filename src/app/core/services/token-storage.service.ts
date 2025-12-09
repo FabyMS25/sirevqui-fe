@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { GlobalComponent } from 'src/app/global-component';
 
-const TOKEN_KEY = 'auth-token';
-const USER_KEY = 'currentUser';
+const TOKEN_KEY = GlobalComponent.TOKEN_KEY;
+const USER_KEY = GlobalComponent.USER_KEY;
 
 @Injectable({
   providedIn: 'root'
@@ -28,11 +29,11 @@ export class TokenStorageService {
   }
 
   public getUser(): any {
-    const user = window.sessionStorage.getItem(USER_KEY);    
-    if (user) {
-      return JSON.parse(user);
-    }
-
-    return {};
+    const user =  window.sessionStorage.getItem(USER_KEY);
+    return user ? JSON.parse(user) : null;
+    // if (user) {
+    //   return JSON.parse(user);
+    // }
+    // return {};
   }
 }

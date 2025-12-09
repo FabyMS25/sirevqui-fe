@@ -1,0 +1,208 @@
+<div class="profile-foreground position-relative mx-n4 mt-n4">
+    <div class="profile-wid-bg">
+        <img src="assets/images/auth-one-bg.jpg" alt="" class="profile-wid-img" />
+    </div>
+</div>
+
+<div class="pt-4 mb-4 mb-lg-3 pb-lg-4 profile-wrapper">
+    <div class="row g-4">
+        <div class="col-auto">
+            <div class="avatar-lg">
+                <img [src]="'assets/icons/users/'+avatar" alt="user-img" class="img-thumbnail rounded-circle" />
+            </div>
+        </div><!--end col-->
+        <div class="col">
+            <div class="p-2">
+                <h3 class="text-white mb-1">
+                    {{userData.designacion? userData.designacion.personaDto.fullName : userData.nombre+" "+userData.apPaterno+" "+userData.apMaterno}}
+                </h3>
+                <p class="text-white text-opacity-75">
+                    {{userType}}
+                </p>
+                <div class="hstack text-white-50 gap-1">
+                    <div class="me-2"><i class="ri-map-pin-user-line mx-1 text-white text-opacity-75 fs-16 align-middle"></i>
+                        {{persona.direccion}}
+                    </div>
+                    <div><i class="ri-building-line mx-1 text-white text-opacity-75 fs-16 align-middle"></i>
+                        {{userData.designacion? userData.designacion.gestionCargoDto.cargoDto.unidad:''}}
+                    </div>
+                </div>
+            </div>
+        </div><!--end col-->
+        <div class="col-12 col-lg-auto order-last order-lg-0">
+            <div class="row text text-white-50 text-center">
+                    <div class="flex-grow-1">
+                        <button class="btn btn-primary add-btn" (click)="openModal()">
+                            <i class="ri-edit-fill me-1 align-bottom"></i> 
+                            Cambiar Contraseña
+                        </button>
+                    </div>
+            </div>
+        </div>
+
+    </div><!--end row-->
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div>
+            <div class="d-flex profile-wrapper">
+                <!-- Nav tabs -->
+                <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav nav-pills animation-nav profile-nav gap-2 gap-lg-3 flex-grow-1" role="tablist">
+                    <li [ngbNavItem]="1" class="nav-item">
+                        <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                            <i class="ri-airplay-fill d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Mi Perfil</span>
+                        </a>
+                        <ng-template ngbNavContent>
+                            <div class="row">
+                                <div class="col-xxl-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="card-title mb-0">Acerca del Sistema</h5>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="d-flex align-items-center">
+                                                   <p>
+                                                        El <strong>Sistema de Gestión de Emisiones Vehiculares</strong> es una plataforma integral diseñada para controlar y reducir la contaminación ambiental mediante la inspección técnica de vehículos. Permite la programación de inspecciones periódicas y operativos sorpresa, emisión de certificados, registro de datos de vehículos y propietarios.
+                                                    </p>
+                                                </div>
+                                                <div class="d-flex mt-1">
+                                                    <div class="flex-shrink-0 avatar-xs align-self-center me-3">
+                                                        <div class="avatar-title bg-light rounded-circle fs-16 text-primary">
+                                                            <i class="ri-global-line"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1 overflow-hidden">
+                                                        <p class="mb-1">Website :</p>
+                                                        <a href="http://quillacollo.gob.bo/" class="fw-semibold">http://quillacollo.gob.bo/</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+
+                                </div><!--end col-->
+                                <div class="col-xxl-9">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header align-items-center d-flex">
+                                                    <h4 class="card-title mb-0  me-2">Información Personal </h4>
+                                                    <div class="flex-shrink-0 ms-auto">
+                                                        <ul ngbNav #customNav="ngbNav" [activeId]="1" class="nav justify-content-end nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                                                            <li [ngbNavItem]="1" class="nav-item">
+                                                                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                                                    Mis Datos
+                                                                </a>
+                                                                <ng-template ngbNavContent>
+                                                                    <div class="profile-timeline order-status">
+                                                                        <div class="table-responsive">
+                                                                            <table class="table table-borderless mb-0">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <th class="ps-0" scope="row">Nombre :</th>
+                                                                                        <td class="text-muted">
+                                                                                            {{persona.nombre}} {{persona.apPaterno}} {{persona.apMaterno}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <th class="ps-0" scope="row">Genero :</th>
+                                                                                        <td class="text-muted">{{persona.sexo ==='F'? 'Femenino' : 'Masculino'}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <th class="ps-0" scope="row">Nro. Carnet :</th>
+                                                                                        <td class="text-muted">{{persona.nroCarnet}} - {{ persona.ciExpedito ? persona.ciExpedito :getCityDescription(persona.ciExpedido) }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <th class="ps-0" scope="row">Nro. Nit :</th>
+                                                                                        <td class="text-muted">{{persona.nroNit}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <th class="ps-0" scope="row">Celular :</th>
+                                                                                        <td class="text-muted">{{persona.nroCelular? persona.nroCelular : persona.celular}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <th class="ps-0" scope="row">E-mail :</th>
+                                                                                        <td class="text-muted">{{persona.correoElectronico ? persona.correoElectronico : persona.correo}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <th class="ps-0" scope="row">Dirección :</th>
+                                                                                        <td class="text-muted">
+                                                                                            {{persona.direccion}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </ng-template>
+                                                            </li>
+                                                            <li [ngbNavItem]="2" class="nav-item" *ngIf="userData.designacion">
+                                                                <a ngbNavLink class="nav-link" data-bs-toggle="tab" role="tab">
+                                                                    Designación 
+                                                                </a>
+                                                                <ng-template ngbNavContent>
+                                                                    <div class="profile-timeline order-status">
+                                                                        <div class="table-responsive">
+                                                                            <table class="table table-borderless mb-0">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <th class="ps-0" scope="row">Profesión :</th>
+                                                                                        <td class="text-muted">{{persona.prefijo}} {{persona.profesion}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <th class="ps-0" scope="row">Unidad :</th>
+                                                                                        <td class="text-muted">{{userData.designacion.gestionCargoDto.cargoDto.unidad}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <th class="ps-0" scope="row">Fecha de Adjudicacion</th>
+                                                                                        <td class="text-muted">
+                                                                                            {{(userData.designacion.fechaInicio | date :'longDate')}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <th class="ps-0" scope="row">Fecha Final de Adjudicacion</th>
+                                                                                        <td class="text-muted">
+                                                                                            {{(userData.designacion.fechaFin | date :'longDate')}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </ng-template>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="tab-content text-muted">
+                                                        <div [ngbNavOutlet]="customNav"></div>
+                                                    </div>
+                                                </div><!-- end card body -->
+                                            </div><!-- end card -->
+                                        </div><!-- end col -->
+                                    </div><!-- end row -->
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </ng-template>
+                    </li>
+                    
+                </ul>
+                <div class="flex-shrink-0">
+                    <a class="btn btn-secondary" href="/auth/profile-setting">
+                        <i class="ri-edit-box-line align-bottom"></i> Configuraciones
+                    </a>
+                </div>
+            </div>
+            <!-- Tab panes -->
+            <div class="tab-content pt-4 text-muted">
+                <div [ngbNavOutlet]="customNav"></div>
+            </div><!--end tab-content-->
+        </div>
+    </div><!--end col-->
+</div><!--end row-->
+

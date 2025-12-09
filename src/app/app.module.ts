@@ -26,7 +26,6 @@ import { StoreModule } from '@ngrx/store';
 import { rootReducer } from './store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-import { AuthenticationEffects } from './store/Authentication/authentication.effects';
 import { EcommerceEffects } from './store/Ecommerce/ecommerce_effect';
 import { ProjectEffects } from './store/Project/project_effect';
 import { TaskEffects } from './store/Task/task_effect';
@@ -76,7 +75,6 @@ if (environment.defaultauth === 'firebase') {
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
     EffectsModule.forRoot([
-      AuthenticationEffects,
       EcommerceEffects,
       ProjectEffects,
       TaskEffects,
